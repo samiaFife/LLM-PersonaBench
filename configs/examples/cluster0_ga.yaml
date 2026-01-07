@@ -4,9 +4,9 @@ description: "Оптимизация промтов для кластера 0"
 
 # Настройки данных
 data:
-  file_path: "data/raw/ipip_neo_120"
-  cluster: [0]
-  num_participants: 30
+  file_path: "data/raw/df_ipipneo_120_clusters"
+  clusters: [0]
+  num_participants: 5
 
 # Настройки модели
 model:
