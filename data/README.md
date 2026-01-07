@@ -25,3 +25,6 @@
 - **Файл**: `IPIP300-SCORES.csv`
 - **Содержит**: Уже рассчитанные скоры по аспектам и по основным пяти чертам личности
 - **Ссылка**: [Kaggle Dataset](https://www.kaggle.com/datasets/edersoncorbari/ipip-neo-big-five-personality-300-item-version/data)
+
+### raw/df_ipipneo_120_clusters
+- save from `notebooks\psychometric_clustering.ipynb`

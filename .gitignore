@@ -211,3 +211,5 @@ test_trash/
 data/kaggle/*
 data/PAPI/*
 data/PAPA/*
+data/PAlign/*
+data/raw/df_ipipneo_120_clusters.csv
