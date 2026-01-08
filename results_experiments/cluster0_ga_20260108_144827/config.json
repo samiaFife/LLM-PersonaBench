@@ -1,0 +1,39 @@
+{
+  "name": "cluster0_genetic_optimization",
+  "description": "Оптимизация промтов для кластера 0",
+  "data": {
+    "file_path": "data/raw/df_ipipneo_120_clusters",
+    "clusters": [
+      0
+    ],
+    "num_participants": 5
+  },
+  "model": {
+    "model_name": "Qwen/Qwen3-Coder-480B-A35B-Instruct",
+    "provider": "cloud",
+    "temperature": 0.7
+  },
+  "evolution": {
+    "algorithm": "GA",
+    "population_size": 12,
+    "num_generations": 25,
+    "mutation_rate": 0.15,
+    "crossover_rate": 0.8,
+    "selection_method": "tournament",
+    "llm_for_evolution": "gpt-3.5-turbo",
+    "genotype_params": {
+      "system_formulations": true,
+      "trait_formulations": true,
+      "facet_formulations": true,
+      "intensity_modifiers": false,
+      "ciritic_formulations": false,
+      "template_structure": false
+    }
+  },
+  "experiment": {
+    "seed": 2026,
+    "save_every_generation": true
+  },
+  "config_file": "configs\\examples\\cluster0_ga.yaml",
+  "experiment_id": "cluster0_ga_20260108_144827"
+}
