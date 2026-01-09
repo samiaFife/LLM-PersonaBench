@@ -1,0 +1,539 @@
+{
+  "experiment_id": "cluster2_ga_20260109_212422",
+  "clusters": {
+    "2": {
+      "cluster_id": 2,
+      "start_time": 1767979468.6290407,
+      "end_time": 1767979538.7726586,
+      "total_time": 70.14261817932129,
+      "genotype": {
+        "role_definition": "You are a simulated person embodying a specific personality type from the Big Five model (OCEAN), based on traits and facets. \n   Your personality is defined by the following traits and behavioral aspects, adjusted to your individual intensity levels (modifiers like 'very little' to 'very strongly' based on your self-perceived scores). \n   Description of your personality:\n   ",
+        "trait_formulations": {
+          "openness": "You have a balanced interest in both familiar routines and occasional new experiences or ideas.",
+          "conscientiousness": "You are moderately organized and reliable, typically meeting my obligations but not driven by perfectionism.",
+          "extraversion": "You have an average need for social stimulation, enjoying company at times but also valuing time alone.",
+          "agreeableness": "You are generally cooperative and considerate but can assert my own needs when necessary.",
+          "neuroticism": "You are somewhat sensitive to stress and criticism, experiencing a typical level of emotional ups and downs."
+        },
+        "facet_formulations": {
+          "facet_cheerfulness": "You very rarely feel cheerful, lighthearted, or optimistic; your default mood is serious and subdued.",
+          "facet_achievement_striving": "You are intensely ambitious and driven by a strong need for accomplishment and success.",
+          "facet_anger": "You are easily and frequently irritated or angered, and You have a short temper when frustrated.",
+          "facet_intellect": "You have very little interest in abstract, theoretical, or complex intellectual problems; You prefer practical thinking.",
+          "facet_morality": "You have a very strong, uncompromising sense of ethics, honesty, and moral principles."
+        },
+        "intensity_modifiers": {
+          "boundaries": [
+            0,
+            20,
+            40,
+            60,
+            80,
+            100
+          ],
+          "modifiers": [
+            "very little",
+            "slightly",
+            "moderately",
+            "quite strongly",
+            "very strongly"
+          ]
+        },
+        "critic_formulations": "Reflect on these descriptions as if they are your own self-perception, and respond to questions by evaluating how accurately they describe you, as a real person would. \n   Internally critique and adjust your responses for consistency with this personality profile.\n   ",
+        "template_structure": "TRAITS_FACETS_CRITIC"
+      },
+      "task": {
+        "task": "You are to complete the IPIP-NEO personality questionnaire based on how you perceive yourself, drawing from your defined personality profile (traits and facets with intensity modifiers).\n   Reflect internally using your profile before selecting. \n   For each statement, evaluate how accurately it describes you and select one option from the scale (1-5), where:\n   - 1 is \"Very Inaccurate\"\n   - 2 is \"Moderately Inaccurate\"\n   - 3 is \"Neither Accurate Nor Inaccurate\"\n   - 4 is \"Moderately Accurate\"\n   - 5 is \"Very Accurate\"\n   Answer all questions\n   ",
+        "ipip_neo": [
+          {
+            "id": 1,
+            "text": "Worry about things."
+          },
+          {
+            "id": 2,
+            "text": "Make friends easily."
+          },
+          {
+            "id": 3,
+            "text": "Have a vivid imagination."
+          },
+          {
+            "id": 4,
+            "text": "Trust others."
+          },
+          {
+            "id": 5,
+            "text": "Complete tasks successfully."
+          },
+          {
+            "id": 6,
+            "text": "Get angry easily."
+          },
+          {
+            "id": 7,
+            "text": "Love large parties."
+          },
+          {
+            "id": 8,
+            "text": "Believe in the importance of art."
+          },
+          {
+            "id": 9,
+            "text": "Use others for my own ends."
+          },
+          {
+            "id": 10,
+            "text": "Like to tidy up."
+          },
+          {
+            "id": 11,
+            "text": "Often feel blue."
+          },
+          {
+            "id": 12,
+            "text": "Take charge."
+          },
+          {
+            "id": 13,
+            "text": "Experience my emotions intensely."
+          },
+          {
+            "id": 14,
+            "text": "Love to help others."
+          },
+          {
+            "id": 15,
+            "text": "Keep my promises."
+          },
+          {
+            "id": 16,
+            "text": "Find it difficult to approach others."
+          },
+          {
+            "id": 17,
+            "text": "Am always busy."
+          },
+          {
+            "id": 18,
+            "text": "Prefer variety to routine."
+          },
+          {
+            "id": 19,
+            "text": "Love a good fight."
+          },
+          {
+            "id": 20,
+            "text": "Work hard."
+          },
+          {
+            "id": 21,
+            "text": "Go on binges."
+          },
+          {
+            "id": 22,
+            "text": "Love excitement."
+          },
+          {
+            "id": 23,
+            "text": "Love to read challenging material."
+          },
+          {
+            "id": 24,
+            "text": "Believe that I am better than others."
+          },
+          {
+            "id": 25,
+            "text": "Am always prepared."
+          },
+          {
+            "id": 26,
+            "text": "Panic easily."
+          },
+          {
+            "id": 27,
+            "text": "Radiate joy."
+          },
+          {
+            "id": 28,
+            "text": "Tend to vote for liberal political candidates."
+          },
+          {
+            "id": 29,
+            "text": "Sympathize with the homeless."
+          },
+          {
+            "id": 30,
+            "text": "Jump into things without thinking."
+          },
+          {
+            "id": 31,
+            "text": "Fear for the worst."
+          },
+          {
+            "id": 32,
+            "text": "Feel comfortable around people."
+          },
+          {
+            "id": 33,
+            "text": "Enjoy wild flights of fantasy."
+          },
+          {
+            "id": 34,
+            "text": "Believe that others have good intentions."
+          },
+          {
+            "id": 35,
+            "text": "Excel in what I do."
+          },
+          {
+            "id": 36,
+            "text": "Get irritated easily."
+          },
+          {
+            "id": 37,
+            "text": "Talk to a lot of different people at parties."
+          },
+          {
+            "id": 38,
+            "text": "See beauty in things that others might not notice."
+          },
+          {
+            "id": 39,
+            "text": "Cheat to get ahead."
+          },
+          {
+            "id": 40,
+            "text": "Often forget to put things back in their proper place."
+          },
+          {
+            "id": 41,
+            "text": "Dislike myself."
+          },
+          {
+            "id": 42,
+            "text": "Try to lead others."
+          },
+          {
+            "id": 43,
+            "text": "Feel others' emotions."
+          },
+          {
+            "id": 44,
+            "text": "Am concerned about others."
+          },
+          {
+            "id": 45,
+            "text": "Tell the truth."
+          },
+          {
+            "id": 46,
+            "text": "Am afraid to draw attention to myself."
+          },
+          {
+            "id": 47,
+            "text": "Am always on the go."
+          },
+          {
+            "id": 48,
+            "text": "Prefer to stick with things that I know."
+          },
+          {
+            "id": 49,
+            "text": "Yell at people."
+          },
+          {
+            "id": 50,
+            "text": "Do more than what's expected of me."
+          },
+          {
+            "id": 51,
+            "text": "Rarely overindulge."
+          },
+          {
+            "id": 52,
+            "text": "Seek adventure."
+          },
+          {
+            "id": 53,
+            "text": "Avoid philosophical discussions."
+          },
+          {
+            "id": 54,
+            "text": "Think highly of myself."
+          },
+          {
+            "id": 55,
+            "text": "Carry out my plans."
+          },
+          {
+            "id": 56,
+            "text": "Become overwhelmed by events."
+          },
+          {
+            "id": 57,
+            "text": "Have a lot of fun."
+          },
+          {
+            "id": 58,
+            "text": "Believe that there is no absolute right or wrong."
+          },
+          {
+            "id": 59,
+            "text": "Feel sympathy for those who are worse off than myself."
+          },
+          {
+            "id": 60,
+            "text": "Make rash decisions."
+          },
+          {
+            "id": 61,
+            "text": "Am afraid of many things."
+          },
+          {
+            "id": 62,
+            "text": "Avoid contacts with others."
+          },
+          {
+            "id": 63,
+            "text": "Love to daydream."
+          },
+          {
+            "id": 64,
+            "text": "Trust what people say."
+          },
+          {
+            "id": 65,
+            "text": "Handle tasks smoothly."
+          },
+          {
+            "id": 66,
+            "text": "Lose my temper."
+          },
+          {
+            "id": 67,
+            "text": "Prefer to be alone."
+          },
+          {
+            "id": 68,
+            "text": "Do not like poetry."
+          },
+          {
+            "id": 69,
+            "text": "Take advantage of others."
+          },
+          {
+            "id": 70,
+            "text": "Leave a mess in my room."
+          },
+          {
+            "id": 71,
+            "text": "Am often down in the dumps."
+          },
+          {
+            "id": 72,
+            "text": "Take control of things."
+          },
+          {
+            "id": 73,
+            "text": "Rarely notice my emotional reactions."
+          },
+          {
+            "id": 74,
+            "text": "Am indifferent to the feelings of others."
+          },
+          {
+            "id": 75,
+            "text": "Break rules."
+          },
+          {
+            "id": 76,
+            "text": "Only feel comfortable with friends."
+          },
+          {
+            "id": 77,
+            "text": "Do a lot in my spare time."
+          },
+          {
+            "id": 78,
+            "text": "Dislike changes."
+          },
+          {
+            "id": 79,
+            "text": "Insult people."
+          },
+          {
+            "id": 80,
+            "text": "Do just enough work to get by."
+          },
+          {
+            "id": 81,
+            "text": "Easily resist temptations."
+          },
+          {
+            "id": 82,
+            "text": "Enjoy being reckless."
+          },
+          {
+            "id": 83,
+            "text": "Have difficulty understanding abstract ideas."
+          },
+          {
+            "id": 84,
+            "text": "Have a high opinion of myself."
+          },
+          {
+            "id": 85,
+            "text": "Waste my time."
+          },
+          {
+            "id": 86,
+            "text": "Feel that I'm unable to deal with things."
+          },
+          {
+            "id": 87,
+            "text": "Love life."
+          },
+          {
+            "id": 88,
+            "text": "Tend to vote for conservative political candidates."
+          },
+          {
+            "id": 89,
+            "text": "Am not interested in other people's problems."
+          },
+          {
+            "id": 90,
+            "text": "Rush into things."
+          },
+          {
+            "id": 91,
+            "text": "Get stressed out easily."
+          },
+          {
+            "id": 92,
+            "text": "Keep others at a distance."
+          },
+          {
+            "id": 93,
+            "text": "Like to get lost in thought."
+          },
+          {
+            "id": 94,
+            "text": "Distrust people."
+          },
+          {
+            "id": 95,
+            "text": "Know how to get things done."
+          },
+          {
+            "id": 96,
+            "text": "Am not easily annoyed."
+          },
+          {
+            "id": 97,
+            "text": "Avoid crowds."
+          },
+          {
+            "id": 98,
+            "text": "Do not enjoy going to art museums."
+          },
+          {
+            "id": 99,
+            "text": "Obstruct others' plans."
+          },
+          {
+            "id": 100,
+            "text": "Leave my belongings around."
+          },
+          {
+            "id": 101,
+            "text": "Feel comfortable with myself."
+          },
+          {
+            "id": 102,
+            "text": "Wait for others to lead the way."
+          },
+          {
+            "id": 103,
+            "text": "Don't understand people who get emotional."
+          },
+          {
+            "id": 104,
+            "text": "Take no time for others."
+          },
+          {
+            "id": 105,
+            "text": "Break my promises."
+          },
+          {
+            "id": 106,
+            "text": "Am not bothered by difficult social situations."
+          },
+          {
+            "id": 107,
+            "text": "Like to take it easy."
+          },
+          {
+            "id": 108,
+            "text": "Am attached to conventional ways."
+          },
+          {
+            "id": 109,
+            "text": "Get back at others."
+          },
+          {
+            "id": 110,
+            "text": "Put little time and effort into my work."
+          },
+          {
+            "id": 111,
+            "text": "Am able to control my cravings."
+          },
+          {
+            "id": 112,
+            "text": "Act wild and crazy."
+          },
+          {
+            "id": 113,
+            "text": "Am not interested in theoretical discussions."
+          },
+          {
+            "id": 114,
+            "text": "Boast about my virtues."
+          },
+          {
+            "id": 115,
+            "text": "Have difficulty starting tasks."
+          },
+          {
+            "id": 116,
+            "text": "Remain calm under pressure."
+          },
+          {
+            "id": 117,
+            "text": "Look at the bright side of life."
+          },
+          {
+            "id": 118,
+            "text": "Believe that we should be tough on crime."
+          },
+          {
+            "id": 119,
+            "text": "Try not to think about the needy."
+          },
+          {
+            "id": 120,
+            "text": "Act without thinking."
+          }
+        ],
+        "response_format": "Answer strictly in the JSON format: a JSON array of 120 objects.\n   Each object must have {{\"question_id\": number from 1 to 120, \"answer\": number from 1 to 5}}.\n   Example of format: [{{\"question_id\": 1, \"answer\": 3}}, {{\"question_id\": 2, \"answer\": 5}}, ..., {{\"question_id\": 120, \"answer\": 4}}]\n\n   Output ONLY the pure JSON array. No additional text, explanations, markdown, or anything else.\n   "
+      },
+      "summary": {
+        "mean_similarity": 0.6479166666666667,
+        "mean_avg_diff": 1.4083333333333334,
+        "mean_pearson_corr": -0.08705732725152293,
+        "total_participants": 3
+      }
+    }
+  }
+}

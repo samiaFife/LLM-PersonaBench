@@ -4,12 +4,13 @@
   "data": {
     "file_path": "data/raw/df_ipipneo_120_clusters",
     "clusters": [
-      0
+      2
     ],
-    "num_participants": 5
+    "num_participants": 3,
+    "save_every_n": 2
   },
   "model": {
-    "model_name": "Qwen/Qwen3-Coder-480B-A35B-Instruct",
+    "model_name": "MiniMaxAI/MiniMax-M2",
     "provider": "cloud",
     "temperature": 0.7
   },
@@ -34,6 +35,6 @@
     "seed": 2026,
     "save_every_generation": true
   },
-  "config_file": "configs\\examples\\cluster0_ga.yaml",
-  "experiment_id": "cluster0_ga_20260108_150843"
+  "config_file": "configs\\examples\\cluster2_ga.yaml",
+  "experiment_id": "cluster2_ga_20260109_211727"
 }
