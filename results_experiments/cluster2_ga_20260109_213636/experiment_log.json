@@ -1,0 +1,353 @@
+{
+  "experiment_id": "cluster2_ga_20260109_213636",
+  "status": "started",
+  "config": {
+    "name": "cluster0_genetic_optimization",
+    "description": "Оптимизация промтов для кластера 0",
+    "data": {
+      "file_path": "data/raw/df_ipipneo_120_clusters",
+      "clusters": [
+        2
+      ],
+      "num_participants": 30,
+      "save_every_n": 2
+    },
+    "model": {
+      "model_name": "Qwen/Qwen3-Coder-480B-A35B-Instruct",
+      "provider": "cloud",
+      "temperature": 0.7
+    },
+    "evolution": {
+      "algorithm": "GA",
+      "population_size": 12,
+      "num_generations": 25,
+      "mutation_rate": 0.15,
+      "crossover_rate": 0.8,
+      "selection_method": "tournament",
+      "llm_for_evolution": "gpt-3.5-turbo",
+      "genotype_params": {
+        "system_formulations": true,
+        "trait_formulations": true,
+        "facet_formulations": true,
+        "intensity_modifiers": false,
+        "ciritic_formulations": false,
+        "template_structure": false
+      }
+    },
+    "experiment": {
+      "seed": 2026,
+      "save_every_generation": true
+    },
+    "config_file": "configs\\examples\\cluster2_ga.yaml",
+    "experiment_id": "cluster2_ga_20260109_213636",
+    "results_dir": "D:\\programming\\GitHub\\LLM-PersonaBench\\results_experiments\\cluster2_ga_20260109_213636"
+  },
+  "clusters": {
+    "2": {
+      "cluster_id": 2,
+      "start_time": 1767980204.7455835,
+      "participants": [
+        {
+          "participant_id": 1,
+          "similarity": 0.6583333333333333,
+          "avg_diff": 1.3666666666666667,
+          "pearson_corr": [
+            -0.058527535048270296,
+            0.5254473727474998
+          ],
+          "iteration_time": 22.618825674057007
+        },
+        {
+          "participant_id": 2,
+          "similarity": 0.6458333333333334,
+          "avg_diff": 1.4166666666666667,
+          "pearson_corr": [
+            -0.00985323766759861,
+            0.9149400083371637
+          ],
+          "iteration_time": 23.608654737472534
+        },
+        {
+          "participant_id": 4,
+          "similarity": 0.7166666666666667,
+          "avg_diff": 1.1333333333333333,
+          "pearson_corr": [
+            -0.1414859396347067,
+            0.12320894039075386
+          ],
+          "iteration_time": 22.096789360046387
+        },
+        {
+          "participant_id": 5,
+          "similarity": 0.7375,
+          "avg_diff": 1.05,
+          "pearson_corr": [
+            0.08304776616420588,
+            0.3671739955214156
+          ],
+          "iteration_time": 23.811529636383057
+        },
+        {
+          "participant_id": 20,
+          "similarity": 0.69375,
+          "avg_diff": 1.225,
+          "pearson_corr": [
+            -0.12203807972273421,
+            0.18423216513290416
+          ],
+          "iteration_time": 23.76121950149536
+        },
+        {
+          "participant_id": 23,
+          "similarity": 0.6520833333333333,
+          "avg_diff": 1.3916666666666666,
+          "pearson_corr": [
+            0.1372633545524617,
+            0.13491652343992522
+          ],
+          "iteration_time": 23.77077317237854
+        },
+        {
+          "participant_id": 27,
+          "similarity": 0.7270833333333333,
+          "avg_diff": 1.0916666666666666,
+          "pearson_corr": [
+            0.16090235972319847,
+            0.07915570555860653
+          ],
+          "iteration_time": 23.77520775794983
+        },
+        {
+          "participant_id": 32,
+          "similarity": 0.6270833333333333,
+          "avg_diff": 1.4916666666666667,
+          "pearson_corr": [
+            0.03816590696788933,
+            0.6789756667980228
+          ],
+          "iteration_time": 22.26942491531372
+        },
+        {
+          "participant_id": 35,
+          "similarity": 0.68125,
+          "avg_diff": 1.275,
+          "pearson_corr": [
+            0.11800202249144447,
+            0.19927946878398742
+          ],
+          "iteration_time": 22.297525882720947
+        },
+        {
+          "participant_id": 41,
+          "similarity": 0.6020833333333333,
+          "avg_diff": 1.5916666666666666,
+          "pearson_corr": [
+            -0.02683139016388338,
+            0.7711285205122252
+          ],
+          "iteration_time": 22.351487636566162
+        },
+        {
+          "participant_id": 47,
+          "similarity": 0.6979166666666666,
+          "avg_diff": 1.2083333333333333,
+          "pearson_corr": [
+            0.04566836169056941,
+            0.620392554821176
+          ],
+          "iteration_time": 22.204762935638428
+        },
+        {
+          "participant_id": 50,
+          "similarity": 0.6125,
+          "avg_diff": 1.55,
+          "pearson_corr": [
+            -0.016289224214985465,
+            0.8598355515603
+          ],
+          "iteration_time": 22.361905574798584
+        },
+        {
+          "participant_id": 56,
+          "similarity": 0.6666666666666666,
+          "avg_diff": 1.3333333333333333,
+          "pearson_corr": [
+            -0.11446424816895864,
+            0.2131815002959417
+          ],
+          "iteration_time": 22.245146989822388
+        },
+        {
+          "participant_id": 59,
+          "similarity": 0.6520833333333333,
+          "avg_diff": 1.3916666666666666,
+          "pearson_corr": [
+            -0.27118357038910806,
+            0.002736148174364198
+          ],
+          "iteration_time": 23.909552812576294
+        },
+        {
+          "participant_id": 60,
+          "similarity": 0.7041666666666667,
+          "avg_diff": 1.1833333333333333,
+          "pearson_corr": [
+            0.023590417593577863,
+            0.7981432637622773
+          ],
+          "iteration_time": 23.896304607391357
+        },
+        {
+          "participant_id": 64,
+          "similarity": 0.6458333333333334,
+          "avg_diff": 1.4166666666666667,
+          "pearson_corr": [
+            0.07517427315228792,
+            0.41448355165504375
+          ],
+          "iteration_time": 23.817278623580933
+        },
+        {
+          "participant_id": 65,
+          "similarity": 0.6208333333333333,
+          "avg_diff": 1.5166666666666666,
+          "pearson_corr": [
+            -0.05312054445822577,
+            0.5644646597073817
+          ],
+          "iteration_time": 22.437933921813965
+        },
+        {
+          "participant_id": 72,
+          "similarity": 0.6166666666666667,
+          "avg_diff": 1.5333333333333334,
+          "pearson_corr": [
+            -0.08536338276231749,
+            0.35391886112699206
+          ],
+          "iteration_time": 23.813570261001587
+        },
+        {
+          "participant_id": 75,
+          "similarity": 0.6729166666666667,
+          "avg_diff": 1.3083333333333333,
+          "pearson_corr": [
+            -0.01788222020490552,
+            0.8462893923785823
+          ],
+          "iteration_time": 22.25143575668335
+        },
+        {
+          "participant_id": 78,
+          "similarity": 0.6125,
+          "avg_diff": 1.55,
+          "pearson_corr": [
+            -0.038463783805984954,
+            0.6766097900686278
+          ],
+          "iteration_time": 22.300435543060303
+        },
+        {
+          "participant_id": 82,
+          "similarity": 0.6208333333333333,
+          "avg_diff": 1.5166666666666666,
+          "pearson_corr": [
+            -0.17653914747663546,
+            0.05375251911145255
+          ],
+          "iteration_time": 22.26898217201233
+        },
+        {
+          "participant_id": 83,
+          "similarity": 0.6604166666666667,
+          "avg_diff": 1.3583333333333334,
+          "pearson_corr": [
+            0.048581485747756545,
+            0.5982460319072673
+          ],
+          "iteration_time": 22.27263832092285
+        },
+        {
+          "participant_id": 84,
+          "similarity": 0.6708333333333333,
+          "avg_diff": 1.3166666666666667,
+          "pearson_corr": [
+            -0.03048819276952635,
+            0.7409749587300881
+          ],
+          "iteration_time": 22.35845971107483
+        },
+        {
+          "participant_id": 85,
+          "similarity": 0.7104166666666667,
+          "avg_diff": 1.1583333333333334,
+          "pearson_corr": [
+            -0.08778396577828315,
+            0.3403864250872888
+          ],
+          "iteration_time": 23.797378301620483
+        },
+        {
+          "participant_id": 86,
+          "similarity": 0.65625,
+          "avg_diff": 1.375,
+          "pearson_corr": [
+            -0.07570384325985212,
+            0.4111941083975751
+          ],
+          "iteration_time": 23.79813313484192
+        },
+        {
+          "participant_id": 88,
+          "similarity": 0.6333333333333333,
+          "avg_diff": 1.4666666666666666,
+          "pearson_corr": [
+            -0.01764319280345907,
+            0.8483192229085209
+          ],
+          "iteration_time": 23.877339363098145
+        },
+        {
+          "participant_id": 91,
+          "similarity": 0.6395833333333333,
+          "avg_diff": 1.4416666666666667,
+          "pearson_corr": [
+            0.06198264138472603,
+            0.5012489045494781
+          ],
+          "iteration_time": 23.812665462493896
+        },
+        {
+          "participant_id": 92,
+          "similarity": 0.6416666666666667,
+          "avg_diff": 1.4333333333333333,
+          "pearson_corr": [
+            0.10282777341569319,
+            0.26373912748696765
+          ],
+          "iteration_time": 22.388341188430786
+        },
+        {
+          "participant_id": 94,
+          "similarity": 0.6166666666666667,
+          "avg_diff": 1.5333333333333334,
+          "pearson_corr": [
+            -0.14518833430968175,
+            0.11360231031474267
+          ],
+          "iteration_time": 22.387277364730835
+        },
+        {
+          "participant_id": 95,
+          "similarity": 0.66875,
+          "avg_diff": 1.325,
+          "pearson_corr": [
+            -0.0011329856358561405,
+            0.9902011617988216
+          ],
+          "iteration_time": 23.74831199645996
+        }
+      ]
+    }
+  }
+}

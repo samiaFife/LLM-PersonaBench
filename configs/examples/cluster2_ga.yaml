@@ -6,7 +6,7 @@ description: "Оптимизация промтов для кластера 0"
 data:
   file_path: "data/raw/df_ipipneo_120_clusters"
   clusters: [2]
-  num_participants: 3
+  num_participants: 30
   save_every_n: 2
 
 # Настройки модели
