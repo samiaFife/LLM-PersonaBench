@@ -1,5 +1,5 @@
 {
-  "experiment_id": "cluster2_ga_20260109_212422",
+  "experiment_id": "cluster2_ga_20260112_094446",
   "status": "started",
   "config": {
     "name": "cluster0_genetic_optimization",
@@ -39,33 +39,33 @@
       "save_every_generation": true
     },
     "config_file": "configs\\examples\\cluster2_ga.yaml",
-    "experiment_id": "cluster2_ga_20260109_212422",
-    "results_dir": "D:\\programming\\GitHub\\LLM-PersonaBench\\results_experiments\\cluster2_ga_20260109_212422"
+    "experiment_id": "cluster2_ga_20260112_094446",
+    "results_dir": "D:\\programming\\GitHub\\LLM-PersonaBench\\results_experiments\\cluster2_ga_20260112_094446"
   },
   "clusters": {
     "2": {
       "cluster_id": 2,
-      "start_time": 1767979468.6290407,
+      "start_time": 1768196703.2444293,
       "participants": [
         {
           "participant_id": 1,
-          "similarity": 0.5958333333333333,
-          "avg_diff": 1.6166666666666667,
-          "pearson_corr": [
-            -0.11989167196801084,
-            0.192127626832629
-          ],
-          "iteration_time": 24.244516134262085
-        },
-        {
-          "participant_id": 2,
           "similarity": 0.6395833333333333,
           "avg_diff": 1.4416666666666667,
           "pearson_corr": [
-            -0.005594640157075963,
-            0.9516417724963094
+            -0.08046581157499574,
+            0.38230866365729305
           ],
-          "iteration_time": 23.68291974067688
+          "iteration_time": 24.62195372581482
+        },
+        {
+          "participant_id": 2,
+          "similarity": 0.6125,
+          "avg_diff": 1.55,
+          "pearson_corr": [
+            -0.11686877205213501,
+            0.20365959269497846
+          ],
+          "iteration_time": 23.986512184143066
         }
       ]
     }

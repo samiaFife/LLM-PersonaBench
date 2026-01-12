@@ -1,77 +1,24 @@
 import pandas as pd
-import scipy.stats as sps
 import json
 
 import time
-from typing import Dict, List, Optional
 from pathlib import Path
 
 from src.models.registry import get_model
-from langchain_core.prompts import ChatPromptTemplate
 
 from src.prompt.traits import traits
 from src.prompt.facets import facets
 from src.prompt.system import system
 
-from src.utils.prompt import build_full_prompt
-from src.utils.parse import parse_response
 from src.utils.time import format_time
 from src.utils.save_result import save_log
+from src.utils.personality_match import fitness_function
 
-def fitness_function(participant, genotype, task, model):
-    """
-    Вычисляет соответствие модели реальному участнику по метрикам схожести ответов.
-    
-    Вход:
-        participant (pd.Series): данные участника с ответами на вопросы IPIP-NEO
-        genotype (dict): конфигурация персонажа для генерации промпта
-        task (dict): описание задачи с вопросами и форматом ответа
-        model: объект модели для генерации ответов
-    Выход:
-        dict: словарь с метриками {'similarity': float, 'avg_diff': float, 'pearson_corr': float}
-              similarity - схожесть ответов (0-1),
-              avg_diff - средняя абсолютная разница ответов,
-              pearson_corr - корреляция Пирсона между ответами
-    """
-    prompt = build_full_prompt(genotype, task, participant)
-    prompt_template = ChatPromptTemplate.from_messages([
-            ("system", prompt["system"]),
-            ("human", prompt["human"])
-        ])
-    print(f"{'='*70}")
-    print(f"🔄 Отправка запроса к модели...")
-    response = model.generate(prompt_template)
-    model_answers = parse_response(response.content)
-    
-    if model_answers is None:
-        print(f"❌ Ошибка: не удалось получить ответы модели\n")
-        return {'similarity': 0.0, 'avg_diff': 0.0, 'pearson_corr': 0.0}
-    
-    print(f"✅ Получено ответов от модели: {len(model_answers)}")
+from src.evolution.evoluter import GAEvoluter
+from src.evolution.my_evaluator import MyEvaluator
+from src.evolution.utils import genotype_to_str, parse_str_to_genotype
 
-    fitness = {}
-    fitness['similarity'] = 0.0
-    fitness['avg_diff'] = 0.0
-    fitness['pearson_corr'] = 0.0
-    lsit_model_ans = []
-    lsit_human_ans = []
-    for q_id, model_ans in model_answers.items():
-        human_ans = participant['i' + str(q_id)]
-        lsit_model_ans.append(model_ans)
-        lsit_human_ans.append(human_ans)
-        if human_ans is not None:
-            fitness['similarity'] += 1 - abs(model_ans - human_ans) / 4
-            fitness['avg_diff'] += abs(model_ans - human_ans)
-    fitness['similarity'] /= len(model_answers)
-    fitness['avg_diff'] /= len(model_answers)
-    fitness['pearson_corr'] = sps.pearsonr(lsit_model_ans, lsit_human_ans)
 
-    print(f"📊 Результаты оценки соответствия:")
-    print(f"- Схожесть (similarity): {fitness['similarity']:.4f}")
-    print(f"- Средняя разница (avg_diff): {fitness['avg_diff']:.4f}")
-    print(f"- Корреляция Пирсона (pearson_corr): {fitness['pearson_corr'][0]:.4f}" if isinstance(fitness['pearson_corr'], tuple) else f"   • Корреляция Пирсона (pearson_corr): {fitness['pearson_corr']:.4f}")
-    print(f"{'='*70}\n")
-    return fitness
 
 # ГЛАВНЫЙ ЦИКЛ ЭКСПЕРИМЕНТА
 def run_experiment(config):
@@ -100,6 +47,10 @@ def run_experiment(config):
         data = json.load(f)
     ipip_neo_questions = data.get('questions')
     print(f"✅ Загружено вопросов: {len(ipip_neo_questions)}\n")
+
+    ###
+    #evo_args = parse_args_from_yaml(config['evolution'])  # Адаптированный parse
+    ###
 
     experiment_log = {
             'experiment_id': experiment_id,
@@ -144,6 +95,12 @@ def run_experiment(config):
         total_participants = len(test_participants)
         print(f"👥 Отобрано участников для кластера {cluster}: {total_participants}")
 
+        ###
+        # evaluator = MyEvaluator(evo_args)
+        # evaluator.dev_participants = test_participants
+        # важно понять как эволюционированный промт потом запарсить, чтобы потом из вытащить нужный части и собрать промт для моделирования
+        ###
+
         test_participants_scores = []
         iteration_times = []
         
@@ -174,7 +131,17 @@ def run_experiment(config):
             if idx % config['data']['save_every_n'] == 0:
                 experiment_log['clusters'][str(cluster)] = cluster_log
                 save_log(experiment_log, results_dir, "experiment_log.json")
+
+            #####
+            # Возможно тут надо будет добавить усреднение скора по всем участникам к этому моменту прошедшим для отдачи этого результата в EvoPrompt
+            #####
             
+            print(f"📊 Результаты оценки соответствия:")
+            print(f"- Схожесть (similarity): {score['similarity']:.4f}")
+            print(f"- Средняя разница (avg_diff): {score['avg_diff']:.4f}")
+            print(f"- Корреляция Пирсона (pearson_corr): {score['pearson_corr'][0]:.4f}" if isinstance(score['pearson_corr'], tuple) else f"   • Корреляция Пирсона (pearson_corr): {score['pearson_corr']:.4f}")
+            print(f"{'='*70}\n")
+
             print(f"⏱️  Время: прошедшее {format_time(cluster_elapsed)} | "
                   f"итерация {format_time(iteration_time)} | "
                   f"ETA {format_time(eta)}")

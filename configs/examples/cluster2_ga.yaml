@@ -6,7 +6,7 @@ description: "Оптимизация промтов для кластера 0"
 data:
   file_path: "data/raw/df_ipipneo_120_clusters"
   clusters: [2]
-  num_participants: 30
+  num_participants: 3
   save_every_n: 2
 
 # Настройки модели
@@ -29,11 +29,11 @@ evolution:
   
   # Что оптимизируем
   genotype_params:
-    system_formulations: true
+    role_definition: true
     trait_formulations: true
     facet_formulations: true
     intensity_modifiers: false 
-    ciritic_formulations: false 
+    ciritic_formulations: true 
     template_structure: false
 
 
