@@ -1,11 +1,17 @@
 import random
-from external.evoprompt.llm_client import paraphrase  # Для вариаций
+from .llm_wrapper import paraphrase  # Используем новую обертку для работы с src.models
 from .utils import genotype_to_evoprompt_str
 
-def init_population(base_genotype, config, pop_size, llm_model):
+def init_population(base_genotype, config, pop_size, evolution_model):
     """
     Инициализирует популяцию строк-генотипов
     Вариации: paraphrase на формулировках
+    
+    Args:
+        base_genotype: базовый генотип (dict)
+        config: конфигурация эксперимента
+        pop_size: размер популяции
+        evolution_model: объект модели из src.models для эволюции
     """
     base_str = genotype_to_evoprompt_str(base_genotype, config)
     instruction = """You should ALWAYS return the result in the following JSON format:
@@ -27,7 +33,7 @@ def init_population(base_genotype, config, pop_size, llm_model):
         optimizations.append("behavioral facet descriptions")
     if params.get('critic_formulations', False):
         optimizations.append("self-criticism instructions")
-        optimizations_text = ", ".join(optimizations)
+    optimizations_text = ", ".join(optimizations)
         
     population = [base_str]
     for _ in range(1, pop_size):
@@ -44,7 +50,7 @@ def init_population(base_genotype, config, pop_size, llm_model):
         4. Improve clarity for LLM understanding
         
         response_format: {instruction}"""
-        variant = paraphrase(para_prompt, llm_model, config['llm_for_evolution'])
+        variant = paraphrase(para_prompt, evolution_model, temperature=0.7)
         population.append(variant)
     random.shuffle(population)  # Для randomness
     return population

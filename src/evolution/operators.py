@@ -1,28 +1,30 @@
-from external.evoprompt.llm_client import llm_query  # Core для мутации
-
-def my_mutate(prompt_str, prob, llm_model, config):
-    if random.random() > prob:
-        return prompt_str
-    # Адаптированный шаблон из template_ga.py: focus на trait/facet_formulations
-    template = "Мутируй описание черт личности для лучшей coherentности, не меняя суть: {prompt}"
-    return llm_query(template.format(prompt=prompt_str), llm_model, config['llm_for_evolution'])
-
-def my_crossover(parent1, parent2, llm_model, config):
-    # Аналогично, из evoluter.py ga_mutate_crossover
-    template = "Скрести формулировки из двух шаблонов: Parent1: {p1}\nParent2: {p2}\nСохрани структуру."
-    child1 = llm_query(template.format(p1=parent1, p2=parent2), llm_model, config['llm_for_evolution'])
-    child2 = llm_query(template.format(p1=parent2, p2=parent1), llm_model, config['llm_for_evolution'])
-    return child1, child2
-
-# В evoluter.py (скопированном) переопределите ga_mutate_crossover/de_mutate на эти, если нужно.
-
-
-
+from .llm_wrapper import llm_query  # Используем новую обертку для работы с src.models
 import random
 import json
 from typing import Dict, Tuple, List, Optional
 from .utils import parse_str_to_genotype
-from external.evoprompt.llm_client import llm_query
+
+def my_mutate(prompt_str, prob, evolution_model, config):
+    """
+    Старая функция-алиас для совместимости.
+    evolution_model - объект модели из src.models
+    """
+    if random.random() > prob:
+        return prompt_str
+    # Адаптированный шаблон из template_ga.py: focus на trait/facet_formulations
+    template = "Мутируй описание черт личности для лучшей coherentности, не меняя суть: {prompt}"
+    return llm_query(template.format(prompt=prompt_str), evolution_model, task=False, temperature=0.7)
+
+def my_crossover(parent1, parent2, evolution_model, config):
+    """
+    Старая функция-алиас для совместимости.
+    evolution_model - объект модели из src.models
+    """
+    # Аналогично, из evoluter.py ga_mutate_crossover
+    template = "Скрести формулировки из двух шаблонов: Parent1: {p1}\nParent2: {p2}\nСохрани структуру."
+    child1 = llm_query(template.format(p1=parent1, p2=parent2), evolution_model, task=False, temperature=0.5)
+    child2 = llm_query(template.format(p1=parent2, p2=parent1), evolution_model, task=False, temperature=0.5)
+    return child1, child2
 
 def get_optimization_fields_instruction(config):
     """Создает инструкцию о том, какие поля оптимизируются"""
@@ -61,10 +63,16 @@ def get_json_structure_instruction():
     Return ONLY the JSON object, no additional text.
     """
 
-def personality_mutation(prompt_str, mutation_rate, llm_model, config):
+def personality_mutation(prompt_str, mutation_rate, evolution_model, config):
     """
     Мутация personality промта через LLM.
     Аналог GA mutation из EvoPrompt, но для JSON-формата personality.
+    
+    Args:
+        prompt_str: строка с JSON-генотипом
+        mutation_rate: вероятность мутации
+        evolution_model: объект модели из src.models для эволюции
+        config: конфигурация эксперимента
     """
     if random.random() > mutation_rate:
         return prompt_str
@@ -91,11 +99,10 @@ def personality_mutation(prompt_str, mutation_rate, llm_model, config):
         {get_json_structure_instruction()}
         """
         
-        # Вызываем LLM для мутации
+        # Вызываем LLM для мутации через новую обертку
         mutated = llm_query(
             data=mutation_template,
-            client=llm_model,
-            type=config['evolution']['llm_for_evolution'],
+            model=evolution_model,
             task=False,
             temperature=0.7,  # Небольшая случайность для мутации
             max_tokens=1500
@@ -114,15 +121,24 @@ def personality_mutation(prompt_str, mutation_rate, llm_model, config):
         print(f"Mutation error: {e}")
         return prompt_str
 
-def personality_crossover(parent1_str, parent2_str, llm_model, config, fixed_modifiers):
+def personality_crossover(parent1_str, parent2_str, evolution_model, config, fixed_modifiers):
     """
     Кроссовер двух personality промтов через LLM.
     Аналог GA crossover из EvoPrompt, но для JSON-формата.
+    
+    Args:
+        parent1_str: строка с JSON-генотипом первого родителя
+        parent2_str: строка с JSON-генотипом второго родителя
+        evolution_model: объект модели из src.models для эволюции
+        config: конфигурация эксперимента
+        fixed_modifiers: фиксированные модификаторы интенсивности
     """
     try:
-        # Парсим родителей для валидации
-        parent1 = parse_str_to_genotype(parent1_str, fixed_modifiers)
-        parent2 = parse_str_to_genotype(parent2_str, fixed_modifiers)
+        # Парсим родителей для валидации (нужен config)
+        if not config or 'evolution' not in config:
+            raise ValueError("config with 'evolution' key is required for crossover")
+        parent1 = parse_str_to_genotype(parent1_str, fixed_modifiers, config)
+        parent2 = parse_str_to_genotype(parent2_str, fixed_modifiers, config)
         
         optimization_instruction = get_optimization_fields_instruction(config)
         
@@ -153,11 +169,10 @@ def personality_crossover(parent1_str, parent2_str, llm_model, config, fixed_mod
         Return ONLY the JSON object with two children, no additional text.
         """
         
-        # Вызываем LLM для кроссовера
+        # Вызываем LLM для кроссовера через новую обертку
         crossover_result = llm_query(
             data=crossover_template,
-            client=llm_model,
-            type=config['evolution']['llm_for_evolution'],
+            model=evolution_model,
             task=False,
             temperature=0.5,  # Умеренная случайность для разнообразия
             max_tokens=2500
@@ -168,8 +183,8 @@ def personality_crossover(parent1_str, parent2_str, llm_model, config, fixed_mod
         
         try:
             result_dict = json.loads(crossover_result)
-            child1 = json.dumps(result_dict.get('child1', parent1), ensure_ascii=False)
-            child2 = json.dumps(result_dict.get('child2', parent2), ensure_ascii=False)
+            child1 = json.dumps(result_dict['child1'], ensure_ascii=False)
+            child2 = json.dumps(result_dict['child2'], ensure_ascii=False)
             return child1, child2
         except json.JSONDecodeError:
             # Fallback: вернуть родителей, если не удалось распарсить
@@ -182,12 +197,8 @@ def personality_crossover(parent1_str, parent2_str, llm_model, config, fixed_mod
         print(f"Crossover error: {e}")
         return parent1_str, parent2_str
 
-##################
-# Все функции ниже надо доработать
-##################
-
-def personality_selection(population: List[str], fitness_scores: List[float], 
-                         selection_method: str = "tournament", tournament_size: int = 3) -> Tuple[str, str]:
+def personality_selection(population, fitness_scores, 
+                         selection_method, tournament_size):
     """
     Селекция родителей для кроссовера.
     Аналог selection из EvoPrompt genetic_algorithm.py
@@ -230,35 +241,6 @@ def personality_selection(population: List[str], fitness_scores: List[float],
     
     return parent1, parent2
 
-def validate_and_repair_genotype(geno_str: str, template_genotype: Dict) -> str:
-    """
-    Валидирует и чинит genotype JSON, если LLM вернула неполный/битый JSON.
-    """
-    try:
-        genotype = json.loads(geno_str)
-        
-        # Проверяем обязательные поля
-        repaired = {}
-        
-        # Копируем существующие поля
-        for key in ['role_definition', 'trait_formulations', 'facet_formulations', 'critic_formulations']:
-            if key in genotype:
-                repaired[key] = genotype[key]
-            elif key in template_genotype:
-                # Заполняем из шаблона, если поле отсутствует
-                repaired[key] = template_genotype[key]
-            else:
-                # Создаем пустое значение
-                if 'formulations' in key:
-                    repaired[key] = {}
-                else:
-                    repaired[key] = ""
-        
-        return json.dumps(repaired, ensure_ascii=False)
-        
-    except json.JSONDecodeError:
-        # Если JSON битый, возвращаем шаблон
-        return json.dumps(template_genotype, ensure_ascii=False)
 
 # Алиасы для совместимости с существующим кодом
 my_mutate = personality_mutation

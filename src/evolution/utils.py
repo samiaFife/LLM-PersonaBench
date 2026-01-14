@@ -95,5 +95,50 @@ def parse_str_to_genotype(geno_str, fixed_modifiers, config):
         
     except json.JSONDecodeError as e:
         raise ValueError(f"Invalid JSON from EvoPrompt: {str(e)}")
+    
+
+def validate_and_repair_genotype(geno_str, fixed_modifiers, template_genotype, config=None):
+    """
+    Валидирует и чинит genotype JSON, если LLM вернула неполный/битый JSON.
+    """
+    try:
+        # Создаем минимальный config если не передан
+        if config is None:
+            config = {'evolution': {'genotype_params': {}}}
+            # Определяем какие поля должны быть на основе template_genotype
+            if 'role_definition' in template_genotype:
+                config['evolution']['genotype_params']['role_definition'] = True
+            if 'trait_formulations' in template_genotype:
+                config['evolution']['genotype_params']['trait_formulations'] = True
+            if 'facet_formulations' in template_genotype:
+                config['evolution']['genotype_params']['facet_formulations'] = True
+            if 'critic_formulations' in template_genotype:
+                config['evolution']['genotype_params']['critic_formulations'] = True
+        
+        genotype = parse_str_to_genotype(geno_str, fixed_modifiers, config)
+        
+        # Проверяем обязательные поля
+        repaired = {}
+        
+        # Копируем существующие поля
+        for key in ['role_definition', 'trait_formulations', 'facet_formulations', 'critic_formulations']:
+            if key in genotype:
+                repaired[key] = genotype[key]
+            elif key in template_genotype:
+                # Заполняем из шаблона, если поле отсутствует
+                repaired[key] = template_genotype[key]
+            else:
+                # Создаем пустое значение
+                if 'formulations' in key:
+                    repaired[key] = {}
+                else:
+                    repaired[key] = ""
+        
+        return json.dumps(repaired, ensure_ascii=False)
+        
+    except (json.JSONDecodeError, ValueError):
+        # Если JSON битый, возвращаем шаблон
+        return json.dumps(template_genotype, ensure_ascii=False)
+
 
 # После добавить другие нужные helpers из EvoPrompt utils.py (импортируйте или скопируйте нужные, e.g., read_lines для init)

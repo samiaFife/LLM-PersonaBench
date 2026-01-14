@@ -16,18 +16,20 @@
   },
   "evolution": {
     "algorithm": "GA",
-    "population_size": 12,
-    "num_generations": 25,
+    "population_size": 4,
+    "num_generations": 3,
     "mutation_rate": 0.15,
     "crossover_rate": 0.8,
     "selection_method": "tournament",
-    "llm_for_evolution": "gpt-3.5-turbo",
+    "llm_for_evolution": "Qwen/Qwen3-Coder-480B-A35B-Instruct",
+    "provider": "cloud",
+    "temperature": 0.7,
     "genotype_params": {
-      "system_formulations": true,
+      "role_definition": true,
       "trait_formulations": true,
       "facet_formulations": true,
       "intensity_modifiers": false,
-      "ciritic_formulations": false,
+      "critic_formulations": true,
       "template_structure": false
     }
   },
@@ -36,5 +38,5 @@
     "save_every_generation": true
   },
   "config_file": "configs\\examples\\cluster2_ga.yaml",
-  "experiment_id": "cluster2_ga_20260112_094321"
+  "experiment_id": "cluster2_ga_20260114_234820"
 }

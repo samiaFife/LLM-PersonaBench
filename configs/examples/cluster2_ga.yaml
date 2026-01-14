@@ -18,14 +18,16 @@ model:
 # Настройки EvoPrompt
 evolution:
   algorithm: "GA"  # GA или DE
-  population_size: 12
-  num_generations: 25
+  population_size: 4
+  num_generations: 3
   mutation_rate: 0.15
   crossover_rate: 0.8
-  selection_method: "tournament"
+  selection_method: "tournament" # tournament, roulette
   
   # LLM для эволюции
-  llm_for_evolution: "gpt-3.5-turbo"
+  llm_for_evolution: "Qwen/Qwen3-Coder-480B-A35B-Instruct" # gpt-3.5-turbo
+  provider: "cloud"
+  temperature: 0.7
   
   # Что оптимизируем
   genotype_params:
@@ -33,7 +35,7 @@ evolution:
     trait_formulations: true
     facet_formulations: true
     intensity_modifiers: false 
-    ciritic_formulations: true 
+    critic_formulations: true 
     template_structure: false
 
 

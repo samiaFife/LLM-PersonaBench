@@ -24,16 +24,11 @@ def fitness_function(participant, genotype, task, model):
             ("system", prompt["system"]),
             ("human", prompt["human"])
         ])
-    print(f"{'='*70}")
-    print(f"🔄 Отправка запроса к модели...")
     response = model.generate(prompt_template)
     model_answers = parse_response(response.content)
     
     if model_answers is None:
-        print(f"❌ Ошибка: не удалось получить ответы модели\n")
         return {'similarity': 0.0, 'avg_diff': 0.0, 'pearson_corr': 0.0}
-    
-    print(f"✅ Получено ответов от модели: {len(model_answers)}")
 
     fitness = {}
     fitness['similarity'] = 0.0
