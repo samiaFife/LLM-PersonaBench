@@ -5,6 +5,16 @@ from langchain_core.prompts import ChatPromptTemplate
 from typing import Union, List
 
 
+def _escape_braces(text: str) -> str:
+    """
+    Экранирует фигурные скобки в тексте для LangChain шаблонов.
+    Заменяет { на {{ и } на }}, но только если это не переменные шаблона.
+    """
+    # Простая замена всех фигурных скобок на экранированные
+    # Это безопасно, так как мы не используем переменные шаблона
+    return text.replace("{", "{{").replace("}", "}}")
+
+
 def llm_query(data: Union[str, List[str]], model, task: bool = False, **config) -> Union[str, List[str]]:
     """
     Обертка для llm_query из EvoPrompt, работающая с моделями из src.models
@@ -33,8 +43,10 @@ def llm_query(data: Union[str, List[str]], model, task: bool = False, **config) 
             # Batch обработка
             results = []
             for prompt_text in data:
+                # Экранируем фигурные скобки для LangChain
+                escaped_prompt = _escape_braces(prompt_text)
                 prompt_template = ChatPromptTemplate.from_messages([
-                    ("user", prompt_text)
+                    ("user", escaped_prompt)
                 ])
                 response = model.generate(prompt_template)
                 result = response.content if hasattr(response, 'content') else str(response)
@@ -48,8 +60,10 @@ def llm_query(data: Union[str, List[str]], model, task: bool = False, **config) 
             return results
         else:
             # Одиночный запрос
+            # Экранируем фигурные скобки для LangChain
+            escaped_data = _escape_braces(data)
             prompt_template = ChatPromptTemplate.from_messages([
-                ("user", data)
+                ("user", escaped_data)
             ])
             response = model.generate(prompt_template)
             result = response.content if hasattr(response, 'content') else str(response)

@@ -38,5 +38,5 @@
     "save_every_generation": true
   },
   "config_file": "configs\\examples\\cluster2_ga.yaml",
-  "experiment_id": "cluster2_ga_20260114_234820"
+  "experiment_id": "cluster2_ga_20260115_005741"
 }

@@ -1,5 +1,5 @@
 {
-  "experiment_id": "cluster2_ga_20260114_234820",
+  "experiment_id": "cluster2_ga_20260115_005741",
   "status": "started",
   "config": {
     "name": "cluster0_genetic_optimization",
@@ -41,8 +41,8 @@
       "save_every_generation": true
     },
     "config_file": "configs\\examples\\cluster2_ga.yaml",
-    "experiment_id": "cluster2_ga_20260114_234820",
-    "results_dir": "D:\\programming\\GitHub\\LLM-PersonaBench\\results_experiments\\cluster2_ga_20260114_234820"
+    "experiment_id": "cluster2_ga_20260115_005741",
+    "results_dir": "D:\\programming\\GitHub\\LLM-PersonaBench\\results_experiments\\cluster2_ga_20260115_005741"
   },
   "clusters": {}
 }

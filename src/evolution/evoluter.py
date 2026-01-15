@@ -141,7 +141,7 @@ class GAEvoluter(Evoluter):
 
                 # Кроссовер
                 if random.random() < self.crossover_prob:
-                    child1, child2 = my_crossover(parent1, parent2, self.evolution_model, self.config)
+                    child1, child2 = my_crossover(parent1, parent2, self.evolution_model, self.config, self.evaluator.fixed_modifiers)
                 else:
                     child1, child2 = parent1, parent2
 

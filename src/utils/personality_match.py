@@ -36,6 +36,7 @@ def fitness_function(participant, genotype, task, model):
     fitness['pearson_corr'] = 0.0
     lsit_model_ans = []
     lsit_human_ans = []
+    valid_count = 0  # Счетчик валидных ответов (где human_ans is not None)
     for q_id, model_ans in model_answers.items():
         human_ans = participant['i' + str(q_id)]
         lsit_model_ans.append(model_ans)
@@ -43,7 +44,14 @@ def fitness_function(participant, genotype, task, model):
         if human_ans is not None:
             fitness['similarity'] += 1 - abs(model_ans - human_ans) / 4
             fitness['avg_diff'] += abs(model_ans - human_ans)
-    fitness['similarity'] /= len(model_answers)
-    fitness['avg_diff'] /= len(model_answers)
+            valid_count += 1
+    # Делим только на количество валидных ответов
+    if valid_count > 0:
+        fitness['similarity'] /= valid_count
+        fitness['avg_diff'] /= valid_count
+    else:
+        # Если нет валидных ответов, возвращаем 0
+        fitness['similarity'] = 0.0
+        fitness['avg_diff'] = 0.0
     fitness['pearson_corr'] = sps.pearsonr(lsit_model_ans, lsit_human_ans)
     return fitness
