@@ -16,7 +16,7 @@ from src.utils.personality_match import fitness_function
 
 from src.evolution.evoluter import GAEvoluter
 from src.evolution.my_evaluator import MyEvaluator
-from src.evolution.utils import genotype_to_evoprompt_str, parse_str_to_genotype, clean_evoprompt_response
+from src.evolution.utils import genotype_to_evoprompt_str, parse_str_to_genotype, clean_evoprompt_response, validate_and_repair_genotype
 from src.evolution.init_population import init_population
 from src.evolution.parse_args import parse_args_from_yaml
 
@@ -53,7 +53,7 @@ def run_experiment(config):
 
     print(f"📦 Загрузка модели...")
     model = get_model(config['model'])
-    print(f"✅ Модель загружена: {config['model'].get('model_name', 'неизвестно')}\n")
+    print(f"✅ Модель для симуляции загружена: {config['model'].get('model_name', 'неизвестно')}\n")
     
     # Загрузка модели для эволюции (если указана)
     evolution_model = None
@@ -107,9 +107,15 @@ def run_experiment(config):
         genotype = base_genotype.copy()
 
         # Фильтрация участников кластера
-        test_participants = data_participants[data_participants['clusters'] == cluster].iloc[:config['data']['num_participants']]
-        total_participants = len(test_participants)
-        print(f"👥 Отобрано участников для кластера {cluster}: {total_participants}")
+        n_participants = config['data']['num_participants']
+        total_participants = data_participants[data_participants['clusters'] == cluster].iloc[:n_participants]
+        
+        train_size = int(n_participants * 0.6)  # 60%
+        test_size = n_participants - train_size  # 40% (остаток)
+        train_participants =  total_participants.iloc[:train_size]
+        test_participants = total_participants.iloc[train_size:]
+        print(f"👥 Отобрано участников для кластера {cluster}: {len(total_participants)}")
+        print(f"👥 Train: {train_size},  Test: {test_size}")
 
         # === ЭВОЛЮЦИОННАЯ ОПТИМИЗАЦИЯ (если включена в config) ===
         if 'evolution' in config and config['evolution'].get('algorithm'):
@@ -117,7 +123,7 @@ def run_experiment(config):
 
         evo_args = parse_args_from_yaml(config['evolution'])
         evaluator = MyEvaluator(evo_args, task, model, fixed_modifiers, config=config)
-        evaluator.dev_participants = test_participants  # Все участники кластера как dev-set
+        evaluator.dev_participants = train_participants  # Train participants как dev-set
 
         # Используем модель эволюции, если она загружена, иначе основную модель
         model_for_evolution = evolution_model if evolution_model is not None else model
@@ -133,7 +139,7 @@ def run_experiment(config):
         best_str_raw = evoluter.population[0]  # Первая — лучшая после сортировки в evolute()
         best_str = clean_evoprompt_response(best_str_raw)
         # Чиним на случай битого JSON
-        from src.evolution.utils import validate_and_repair_genotype
+        
         best_str = validate_and_repair_genotype(best_str, fixed_modifiers, base_genotype, config)
         genotype = parse_str_to_genotype(best_str, fixed_modifiers, config)
         print(f"✅ Эволюция завершена. Лучший генотип сохранён.")
@@ -172,7 +178,7 @@ def run_experiment(config):
         print(f"{'='*70}")
         print(f"⏱️  Статистика времени кластера:")
         print(f"- Общее время: {format_time(cluster_total_time)}")
-        print(f"- Всего обработано участников: {total_participants}")
+        print(f"- Всего обработано участников: {n_participants}")
         print(f"{'='*70}")
         print(f"✅ Обработка кластера {cluster} завершена\n")
         
