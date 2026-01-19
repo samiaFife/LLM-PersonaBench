@@ -12,7 +12,11 @@ from src.prompt.system import system
 
 from src.utils.time import format_time
 from src.utils.save_result import save_log
-from src.utils.personality_match import fitness_function
+from src.utils.personality_match import (
+    fitness_function,
+    aggregate_cluster_five_factor_metrics,
+    OCEAN_AND_FACET_ORDER,
+)
 
 from src.evolution.evoluter import GAEvoluter
 from src.evolution.my_evaluator import MyEvaluator
@@ -150,17 +154,49 @@ def run_experiment(config):
         save_log(generations_log, results_dir / f"cluster_{cluster}", f"evolution_generations.json")
 
         # === ФИНАЛЬНАЯ ОЦЕНКА ОПТИМИЗИРОВАННОГО ГЕНОТИПА ===
+        print(f"📊 ОЦЕНКА ОПТИМИЗИРОВАННОГО ГЕНОТИПА на Test")
         test_participants_scores = []
-        
+        rows_simulated = []
+
         for idx, (index, participant) in enumerate(test_participants.iterrows(), 1):
             score = fitness_function(participant, genotype, task, model)
-            # Сохраняем все три метрики для каждого участника
+            # Метрики по сырым ответам
             participant_score = {
                 'similarity': score['similarity'],
                 'avg_diff': score['avg_diff'],
-                'pearson_corr': score['pearson_corr'][0] if isinstance(score['pearson_corr'], tuple) else score['pearson_corr']
+                'pearson_corr': score['pearson_corr'][0] if isinstance(score['pearson_corr'], tuple) else score['pearson_corr'],
             }
+            # Five-factor метрики (OCEAN+30), в т.ч. mae_per_dim — MAE по каждому из 35 признаков
+            for k in ('mae_35', 'mae_per_dim', 'similarity_35', 'pearson_35', 'kappa_35', 'mean_similarity_facets', 'mean_similarity_traits'):
+                participant_score[k] = score.get(k)
             test_participants_scores.append(participant_score)
+
+            # Строка для CSV: case, source, OCEAN+30, mae_<dim> по 35 признакам, i1..i120
+            model_answers = score.get('model_answers') or {}
+            simulated_ocean = score.get('simulated_ocean') or {}
+            mae_per_dim = score.get('mae_per_dim') or {}
+            row = {
+                'case': participant.get('case', index),
+                'source': 'simulated',
+            }
+            for k in OCEAN_AND_FACET_ORDER:
+                row[k] = simulated_ocean.get(k)
+            for k in OCEAN_AND_FACET_ORDER:
+                row['mae_' + k] = mae_per_dim.get(k)
+            for i in range(1, 121):
+                row['i' + str(i)] = model_answers.get(i)
+            rows_simulated.append(row)
+
+        # Сохранение смоделированных ответов и OCEAN+30 в CSV (для сравнения с реальными по case)
+        if rows_simulated:
+            (results_dir / f"cluster_{cluster}").mkdir(parents=True, exist_ok=True)
+            pd.DataFrame(rows_simulated).to_csv(
+                results_dir / f"cluster_{cluster}" / "simulated_ocean_test.csv",
+                index=False,
+            )
+
+        # Усреднение five-factor метрик по кластеру
+        agg_ff = aggregate_cluster_five_factor_metrics(test_participants_scores)
 
         mean_similarity_participants = sum([i['similarity'] for i in test_participants_scores]) / len(test_participants_scores)
         mean_avg_diff_participants = sum([i['avg_diff'] for i in test_participants_scores]) / len(test_participants_scores)
@@ -175,6 +211,13 @@ def run_experiment(config):
         print(f"- Средняя схожесть (similarity): {mean_similarity_participants:.4f}")
         print(f"- Средняя разница (avg_diff): {mean_avg_diff_participants:.4f}")
         print(f"- Средняя корреляция Пирсона (pearson_corr): {mean_pearson_corr_participants:.4f}")
+        print(f"  Five-factor (OCEAN+30):")
+        print(f"  - MAE (mean |real−sim|): {agg_ff.get('mean_mae_35', 0):.4f}")
+        print(f"  - Similarity по 35: {agg_ff.get('mean_similarity_35', 0):.4f}")
+        print(f"  - Similarity по 30 фасетам: {agg_ff.get('mean_similarity_facets', 0):.4f}")
+        print(f"  - Similarity по 5 чертам: {agg_ff.get('mean_similarity_traits', 0):.4f}")
+        print(f"  - Pearson по 35: {agg_ff.get('mean_pearson_35', 0):.4f}")
+        print(f"  - Cohen's kappa (low/avg/high): {agg_ff.get('mean_kappa_35', 0):.4f}")
         print(f"{'='*70}")
         print(f"⏱️  Статистика времени кластера:")
         print(f"- Общее время: {format_time(cluster_total_time)}")
@@ -190,7 +233,8 @@ def run_experiment(config):
             'mean_similarity': mean_similarity_participants,
             'mean_avg_diff': mean_avg_diff_participants,
             'mean_pearson_corr': mean_pearson_corr_participants,
-            'total_participants': total_participants
+            'total_participants': len(total_participants),
+            **agg_ff,
         }
         # Сохраняем детальные скоры по участникам для финальной оценки
         cluster_log['final_participants_scores'] = test_participants_scores

@@ -1,12 +1,12 @@
 # Метаинформация
-name: "cluster0_genetic_optimization"
-description: "Оптимизация промтов для кластера 0"
+name: "cluster2_genetic_optimization"
+description: "Оптимизация промтов для кластера 2"
 
 # Настройки данных
 data:
   file_path: "data/raw/df_ipipneo_120_clusters"
   clusters: [2]
-  num_participants: 5 # train:мин30-50 test:40 # посчитать сколько по токенам затраты
+  num_participants: 3 # train:мин30-50 test:40 # посчитать сколько по токенам затраты
   save_every_n: 2
 
 # Настройки модели
@@ -18,8 +18,8 @@ model:
 # Настройки EvoPrompt
 evolution:
   algorithm: "GA"  # GA или DE
-  population_size: 4 # поколений 4, 6, 10
-  num_generations: 3 # 3, 5
+  population_size: 1 # поколений 4, 6, 10
+  num_generations: 1 # 3, 5
   mutation_rate: 0.15
   crossover_rate: 0.8
   selection_method: "tournament" # tournament, roulette
