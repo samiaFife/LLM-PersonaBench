@@ -6,10 +6,6 @@ import random
 
 from src.models.registry import get_model
 
-from src.prompt.traits import traits
-from src.prompt.facets import facets
-from src.prompt.system import system
-
 from src.utils.time import format_time
 from src.utils.save_result import save_log
 from src.utils.personality_match import (
@@ -24,6 +20,49 @@ from src.evolution.utils import genotype_to_evoprompt_str, parse_str_to_genotype
 from src.evolution.init_population import init_population
 from src.evolution.parse_args import parse_args_from_yaml
 
+
+def _load_traits(config):
+    """Загружает traits из config['prompt']['traits_path'] или из встроенного src.prompt.traits."""
+    prompt_cfg = config.get('prompt') or {}
+    path = prompt_cfg.get('traits_path')
+    if path:
+        p = Path(path)
+        if not p.is_absolute():
+            p = Path.cwd() / p
+        with open(p, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        return {int(k): v for k, v in data.items()}
+    from src.prompt.traits import traits
+    return traits
+
+
+def _load_facets(config):
+    """Загружает facets из config['prompt']['facets_path'] или из встроенного src.prompt.facets."""
+    prompt_cfg = config.get('prompt') or {}
+    path = prompt_cfg.get('facets_path')
+    if path:
+        p = Path(path)
+        if not p.is_absolute():
+            p = Path.cwd() / p
+        with open(p, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+        return {int(k): v for k, v in data.items()}
+    from src.prompt.facets import facets
+    return facets
+
+
+def _load_system(config):
+    """Загружает system из config['prompt']['system_path'] или из встроенного src.prompt.system."""
+    prompt_cfg = config.get('prompt') or {}
+    path = prompt_cfg.get('system_path')
+    if path:
+        p = Path(path)
+        if not p.is_absolute():
+            p = Path.cwd() / p
+        with open(p, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    from src.prompt.system import system
+    return system
 
 
 # ГЛАВНЫЙ ЦИКЛ ЭКСПЕРИМЕНТА
@@ -51,6 +90,11 @@ def run_experiment(config):
             'clusters': {}
         }
     save_log(result_cluster, results_dir, "result_log.json")
+
+    # Загрузка traits, facets, system из путей в конфиге или встроенных по умолчанию
+    traits = _load_traits(config)
+    facets = _load_facets(config)
+    system = _load_system(config)
 
     # Фиксированные модификаторы интенсивности (не оптимизируются пока)
     fixed_modifiers = system['intensity_modifiers']

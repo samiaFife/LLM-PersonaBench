@@ -2,6 +2,12 @@
 name: "cluster2_genetic_optimization"
 description: "Оптимизация промтов для кластера 2"
 
+# Пути к промптам (опционально). Если не указаны — используются встроенные из src.prompt
+prompt:
+  traits_path: "src/prompt/traits.json"   # например "src/prompt/traits.json"
+  facets_path: "src/prompt/facets.json"   # например "src/prompt/facets.json"
+  system_path: "src/prompt/system.json"   # например "src/prompt/system.json"
+
 # Настройки данных
 data:
   file_path: "data/raw/df_ipipneo_120_clusters"
