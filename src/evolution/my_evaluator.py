@@ -2,7 +2,7 @@ import time
 from external.evoprompt.evaluator import Evaluator  # Base из EvoPrompt
 from src.utils.time import format_time
 from src.utils.save_result import save_log
-from src.utils.personality_match import fitness_function
+from src.utils.personality_match import fitness_function, evaluate_participants_batch
 from .utils import parse_str_to_genotype
 
 class MyEvaluator(Evaluator):
@@ -13,6 +13,9 @@ class MyEvaluator(Evaluator):
         self.fixed_modifiers = fixed_modifiers  # Из system
         self.dev_participants = []  # Устанавливаем позже
         self.config = config  # Сохраняем config для использования в forward
+        # Пачка участников для параллельных запросов к модели (1 = только последовательно)
+        cfg = config or {}
+        self.participant_batch_size = int((cfg.get('evolution') or {}).get('participant_batch_size', 1) or 1)
 
     def forward(self, prompt_str, config=None):
         """
@@ -28,11 +31,11 @@ class MyEvaluator(Evaluator):
             # Если config не передан, создаем минимальный из args
             config = {'evolution': {'genotype_params': {}}}
         genotype = parse_str_to_genotype(prompt_str, self.fixed_modifiers, config)
+        scores = evaluate_participants_batch(
+            self.dev_participants, genotype, self.task, self.model, self.participant_batch_size
+        )
         test_participants_scores = []
-        for idx, (index, participant) in enumerate(self.dev_participants.iterrows(), 1):
-            # ГЛАВНАЯ часть цикла: обращение к модели
-            score = fitness_function(participant, genotype, self.task, self.model)
-            # Сохраняем все три метрики для каждого участника
+        for score in scores:
             participant_score = {
                 'similarity': score['similarity'],
                 'avg_diff': score['avg_diff'],

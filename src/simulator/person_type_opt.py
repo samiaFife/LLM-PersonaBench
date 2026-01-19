@@ -9,6 +9,7 @@ from src.models.registry import get_model
 from src.utils.time import format_time
 from src.utils.save_result import save_log
 from src.utils.personality_match import (
+    evaluate_participants_batch,
     fitness_function,
     aggregate_cluster_five_factor_metrics,
     OCEAN_AND_FACET_ORDER,
@@ -110,7 +111,10 @@ def run_experiment(config):
         evolution_model_config = {
             'model_name': config['evolution']['llm_for_evolution'],
             'provider': config['evolution'].get('provider', 'cloud'), 
-            'temperature': config['evolution'].get('temperature', 0.7)
+            'temperature': config['evolution'].get('temperature', 0.7),
+            # опционально: чтобы эволюционные LLM-вызовы не "висели" бесконечно
+            'timeout': config['evolution'].get('timeout') or config['model'].get('timeout') or config['model'].get('request_timeout'),
+            'max_retries': config['evolution'].get('max_retries') or config['model'].get('max_retries'),
         }
         evolution_model = get_model(evolution_model_config)
         print(f"✅ Модель для эволюции загружена: {evolution_model_config['model_name']}\n")
@@ -187,7 +191,6 @@ def run_experiment(config):
         best_str_raw = evoluter.population[0]  # Первая — лучшая после сортировки в evolute()
         best_str = clean_evoprompt_response(best_str_raw)
         # Чиним на случай битого JSON
-        
         best_str = validate_and_repair_genotype(best_str, fixed_modifiers, base_genotype, config)
         genotype = parse_str_to_genotype(best_str, fixed_modifiers, config)
         print(f"✅ Эволюция завершена. Лучший генотип сохранён.")
@@ -198,12 +201,19 @@ def run_experiment(config):
         save_log(generations_log, results_dir / f"cluster_{cluster}", f"evolution_generations.json")
 
         # === ФИНАЛЬНАЯ ОЦЕНКА ОПТИМИЗИРОВАННОГО ГЕНОТИПА ===
-        print(f"📊 ОЦЕНКА ОПТИМИЗИРОВАННОГО ГЕНОТИПА на Test")
+        participant_batch_size = int(
+            (config.get('simulation') or {}).get('participant_batch_size')
+            or (config.get('evolution') or {}).get('participant_batch_size', 1)
+            or 1
+        )
+        print(f"📊 ОЦЕНКА ОПТИМИЗИРОВАННОГО ГЕНОТИПА на Test (batch_size={participant_batch_size})")
         test_participants_scores = []
         rows_simulated = []
 
-        for idx, (index, participant) in enumerate(test_participants.iterrows(), 1):
-            score = fitness_function(participant, genotype, task, model)
+        scores = evaluate_participants_batch(
+            test_participants, genotype, task, model, participant_batch_size
+        )
+        for (index, participant), score in zip(list(test_participants.iterrows()), scores):
             # Метрики по сырым ответам
             participant_score = {
                 'similarity': score['similarity'],

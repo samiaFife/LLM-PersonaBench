@@ -12,7 +12,7 @@ prompt:
 data:
   file_path: "data/raw/df_ipipneo_120_clusters"
   clusters: [2]
-  num_participants: 3 # train:мин30-50 test:40 # посчитать сколько по токенам затраты
+  num_participants: 8 # train:мин30-50 test:40 # посчитать сколько по токенам затраты
   save_every_n: 2
 
 # Настройки модели
@@ -20,16 +20,21 @@ model:
   model_name: "Qwen/Qwen3-235B-A22B-Instruct-2507" # MiniMaxAI/MiniMax-M2 #Qwen2.7 или Deepseek(Gigachat3)
   provider: "cloud"
   temperature: 0.7
+  timeout: 120
+  max_retries: 2
 
 # Настройки EvoPrompt
 evolution:
   algorithm: "GA"  # GA или DE
-  population_size: 1 # поколений 4, 6, 10
-  num_generations: 1 # 3, 5
+  population_size: 3 # поколений 4, 6, 10
+  num_generations: 2 # 3, 5
   mutation_rate: 0.15
   crossover_rate: 0.8
   selection_method: "tournament" # tournament, roulette
-  
+  participant_batch_size: 5   # пачка участников в модель (5/10/20); 1 — по одному
+  timeout: 120
+  max_retries: 2
+
   # LLM для эволюции
   llm_for_evolution: "Qwen/Qwen3-235B-A22B-Instruct-2507" # gpt-3.5-turbo
   provider: "cloud"

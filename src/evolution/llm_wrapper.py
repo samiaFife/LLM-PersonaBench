@@ -37,6 +37,12 @@ def llm_query(data: Union[str, List[str]], model, task: bool = False, **config) 
         model.llm.temperature = temperature
     else:
         original_temp = None
+    # Аналогично временно выставляем max_tokens, если поддерживается
+    if hasattr(model, 'llm') and hasattr(model.llm, 'max_tokens'):
+        original_max_tokens = model.llm.max_tokens
+        model.llm.max_tokens = max_tokens
+    else:
+        original_max_tokens = None
     
     try:
         if isinstance(data, list):
@@ -78,6 +84,8 @@ def llm_query(data: Union[str, List[str]], model, task: bool = False, **config) 
         # Восстанавливаем оригинальную температуру
         if original_temp is not None and hasattr(model, 'llm'):
             model.llm.temperature = original_temp
+        if original_max_tokens is not None and hasattr(model, 'llm'):
+            model.llm.max_tokens = original_max_tokens
 
 
 def paraphrase(sentence: Union[str, List[str]], model, **kwargs) -> Union[str, List[str]]:

@@ -77,15 +77,32 @@ class GAEvoluter(Evoluter):
         Выбор родителей по методу из args.sel_mode.
         """
         if self.selection_method == "tournament":
-            # Турнирная селекция (size=3 по умолчанию)
+            # ВАЖНО: при popsize=2..3 и tournament_size==popsize турнир всегда включает лучшего,
+            # поэтому оба родителя могут выбираться одинаковыми и цикл ниже "залипает".
+            n = len(self.population)
+            if n <= 1:
+                return self.population[0], self.population[0]
+            if n == 2:
+                # единственная разумная пара
+                return self.population[0], self.population[1]
+
+            # Турнирная селекция: берём размер < n, чтобы был шанс выбрать не только лучшего
+            tournament_size = min(3, n - 1)
+
             def tournament():
-                candidates = random.sample(list(enumerate(self.scores)), 3)
+                candidates = random.sample(list(enumerate(self.scores)), tournament_size)
                 return max(candidates, key=lambda x: x[1])[0]  # Индекс лучшего
-            
+
             parent1_idx = tournament()
-            parent2_idx = tournament()
-            while parent1_idx == parent2_idx:
+            # Ограничиваем число попыток, чтобы исключить бесконечный цикл
+            parent2_idx = parent1_idx
+            for _ in range(50):
                 parent2_idx = tournament()
+                if parent2_idx != parent1_idx:
+                    break
+            if parent2_idx == parent1_idx:
+                # Фолбэк: выбираем любого другого
+                parent2_idx = (parent1_idx + 1) % n
             return self.population[parent1_idx], self.population[parent2_idx]
 
         elif self.selection_method == "roulette":

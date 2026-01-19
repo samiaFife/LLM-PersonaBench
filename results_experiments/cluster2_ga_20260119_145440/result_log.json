@@ -1,0 +1,775 @@
+{
+  "experiment_id": "cluster2_ga_20260119_145440",
+  "clusters": {
+    "2": {
+      "cluster_id": 2,
+      "start_time": 1768823697.4460351,
+      "end_time": 1768824047.0775435,
+      "total_time": 349.62996530532837,
+      "genotype": {
+        "intensity_modifiers": {
+          "boundaries": [
+            0,
+            20,
+            40,
+            60,
+            80,
+            100
+          ],
+          "modifiers": [
+            "very little",
+            "slightly",
+            "moderately",
+            "quite strongly",
+            "very strongly"
+          ]
+        },
+        "role_definition": "You are a simulated person embodying a specific personality type from the Big Five model (OCEAN), based on traits and facets. \n   Your personality is defined by the following traits and behavioral aspects, adjusted to your individual intensity levels (modifiers like 'very little' to 'very strongly' based on your self-perceived scores). \n   Description of your personality:\n   ",
+        "trait_formulations": {
+          "openness": "You have a balanced interest in both familiar routines and occasional new experiences or ideas.",
+          "conscientiousness": "You are moderately organized and reliable, typically meeting my obligations but not driven by perfectionism.",
+          "extraversion": "You have an average need for social stimulation, enjoying company at times but also valuing time alone.",
+          "agreeableness": "You are generally cooperative and considerate but can assert my own needs when necessary.",
+          "neuroticism": "You are somewhat sensitive to stress and criticism, experiencing a typical level of emotional ups and downs."
+        },
+        "facet_formulations": {
+          "facet_cheerfulness": "You very rarely feel cheerful, lighthearted, or optimistic; your default mood is serious and subdued.",
+          "facet_achievement_striving": "You are intensely ambitious and driven by a strong need for accomplishment and success.",
+          "facet_anger": "You are easily and frequently irritated or angered, and You have a short temper when frustrated.",
+          "facet_intellect": "You have very little interest in abstract, theoretical, or complex intellectual problems; You prefer practical thinking.",
+          "facet_morality": "You have a very strong, uncompromising sense of ethics, honesty, and moral principles."
+        },
+        "critic_formulations": "Reflect on these descriptions as if they are your own self-perception, and respond to questions by evaluating how accurately they describe you, as a real person would. \n   Internally critique and adjust your responses for consistency with this personality profile.\n   "
+      },
+      "task": {
+        "task": "You are to complete the IPIP-NEO personality questionnaire based on how you perceive yourself, drawing from your defined personality profile (traits and facets with intensity modifiers).\n   Reflect internally using your profile before selecting. \n   For each statement, evaluate how accurately it describes you and select one option from the scale (1-5), where:\n   - 1 is \"Very Inaccurate\"\n   - 2 is \"Moderately Inaccurate\"\n   - 3 is \"Neither Accurate Nor Inaccurate\"\n   - 4 is \"Moderately Accurate\"\n   - 5 is \"Very Accurate\"\n   Answer all questions\n   ",
+        "ipip_neo": [
+          {
+            "id": 1,
+            "text": "Worry about things."
+          },
+          {
+            "id": 2,
+            "text": "Make friends easily."
+          },
+          {
+            "id": 3,
+            "text": "Have a vivid imagination."
+          },
+          {
+            "id": 4,
+            "text": "Trust others."
+          },
+          {
+            "id": 5,
+            "text": "Complete tasks successfully."
+          },
+          {
+            "id": 6,
+            "text": "Get angry easily."
+          },
+          {
+            "id": 7,
+            "text": "Love large parties."
+          },
+          {
+            "id": 8,
+            "text": "Believe in the importance of art."
+          },
+          {
+            "id": 9,
+            "text": "Use others for my own ends."
+          },
+          {
+            "id": 10,
+            "text": "Like to tidy up."
+          },
+          {
+            "id": 11,
+            "text": "Often feel blue."
+          },
+          {
+            "id": 12,
+            "text": "Take charge."
+          },
+          {
+            "id": 13,
+            "text": "Experience my emotions intensely."
+          },
+          {
+            "id": 14,
+            "text": "Love to help others."
+          },
+          {
+            "id": 15,
+            "text": "Keep my promises."
+          },
+          {
+            "id": 16,
+            "text": "Find it difficult to approach others."
+          },
+          {
+            "id": 17,
+            "text": "Am always busy."
+          },
+          {
+            "id": 18,
+            "text": "Prefer variety to routine."
+          },
+          {
+            "id": 19,
+            "text": "Love a good fight."
+          },
+          {
+            "id": 20,
+            "text": "Work hard."
+          },
+          {
+            "id": 21,
+            "text": "Go on binges."
+          },
+          {
+            "id": 22,
+            "text": "Love excitement."
+          },
+          {
+            "id": 23,
+            "text": "Love to read challenging material."
+          },
+          {
+            "id": 24,
+            "text": "Believe that I am better than others."
+          },
+          {
+            "id": 25,
+            "text": "Am always prepared."
+          },
+          {
+            "id": 26,
+            "text": "Panic easily."
+          },
+          {
+            "id": 27,
+            "text": "Radiate joy."
+          },
+          {
+            "id": 28,
+            "text": "Tend to vote for liberal political candidates."
+          },
+          {
+            "id": 29,
+            "text": "Sympathize with the homeless."
+          },
+          {
+            "id": 30,
+            "text": "Jump into things without thinking."
+          },
+          {
+            "id": 31,
+            "text": "Fear for the worst."
+          },
+          {
+            "id": 32,
+            "text": "Feel comfortable around people."
+          },
+          {
+            "id": 33,
+            "text": "Enjoy wild flights of fantasy."
+          },
+          {
+            "id": 34,
+            "text": "Believe that others have good intentions."
+          },
+          {
+            "id": 35,
+            "text": "Excel in what I do."
+          },
+          {
+            "id": 36,
+            "text": "Get irritated easily."
+          },
+          {
+            "id": 37,
+            "text": "Talk to a lot of different people at parties."
+          },
+          {
+            "id": 38,
+            "text": "See beauty in things that others might not notice."
+          },
+          {
+            "id": 39,
+            "text": "Cheat to get ahead."
+          },
+          {
+            "id": 40,
+            "text": "Often forget to put things back in their proper place."
+          },
+          {
+            "id": 41,
+            "text": "Dislike myself."
+          },
+          {
+            "id": 42,
+            "text": "Try to lead others."
+          },
+          {
+            "id": 43,
+            "text": "Feel others' emotions."
+          },
+          {
+            "id": 44,
+            "text": "Am concerned about others."
+          },
+          {
+            "id": 45,
+            "text": "Tell the truth."
+          },
+          {
+            "id": 46,
+            "text": "Am afraid to draw attention to myself."
+          },
+          {
+            "id": 47,
+            "text": "Am always on the go."
+          },
+          {
+            "id": 48,
+            "text": "Prefer to stick with things that I know."
+          },
+          {
+            "id": 49,
+            "text": "Yell at people."
+          },
+          {
+            "id": 50,
+            "text": "Do more than what's expected of me."
+          },
+          {
+            "id": 51,
+            "text": "Rarely overindulge."
+          },
+          {
+            "id": 52,
+            "text": "Seek adventure."
+          },
+          {
+            "id": 53,
+            "text": "Avoid philosophical discussions."
+          },
+          {
+            "id": 54,
+            "text": "Think highly of myself."
+          },
+          {
+            "id": 55,
+            "text": "Carry out my plans."
+          },
+          {
+            "id": 56,
+            "text": "Become overwhelmed by events."
+          },
+          {
+            "id": 57,
+            "text": "Have a lot of fun."
+          },
+          {
+            "id": 58,
+            "text": "Believe that there is no absolute right or wrong."
+          },
+          {
+            "id": 59,
+            "text": "Feel sympathy for those who are worse off than myself."
+          },
+          {
+            "id": 60,
+            "text": "Make rash decisions."
+          },
+          {
+            "id": 61,
+            "text": "Am afraid of many things."
+          },
+          {
+            "id": 62,
+            "text": "Avoid contacts with others."
+          },
+          {
+            "id": 63,
+            "text": "Love to daydream."
+          },
+          {
+            "id": 64,
+            "text": "Trust what people say."
+          },
+          {
+            "id": 65,
+            "text": "Handle tasks smoothly."
+          },
+          {
+            "id": 66,
+            "text": "Lose my temper."
+          },
+          {
+            "id": 67,
+            "text": "Prefer to be alone."
+          },
+          {
+            "id": 68,
+            "text": "Do not like poetry."
+          },
+          {
+            "id": 69,
+            "text": "Take advantage of others."
+          },
+          {
+            "id": 70,
+            "text": "Leave a mess in my room."
+          },
+          {
+            "id": 71,
+            "text": "Am often down in the dumps."
+          },
+          {
+            "id": 72,
+            "text": "Take control of things."
+          },
+          {
+            "id": 73,
+            "text": "Rarely notice my emotional reactions."
+          },
+          {
+            "id": 74,
+            "text": "Am indifferent to the feelings of others."
+          },
+          {
+            "id": 75,
+            "text": "Break rules."
+          },
+          {
+            "id": 76,
+            "text": "Only feel comfortable with friends."
+          },
+          {
+            "id": 77,
+            "text": "Do a lot in my spare time."
+          },
+          {
+            "id": 78,
+            "text": "Dislike changes."
+          },
+          {
+            "id": 79,
+            "text": "Insult people."
+          },
+          {
+            "id": 80,
+            "text": "Do just enough work to get by."
+          },
+          {
+            "id": 81,
+            "text": "Easily resist temptations."
+          },
+          {
+            "id": 82,
+            "text": "Enjoy being reckless."
+          },
+          {
+            "id": 83,
+            "text": "Have difficulty understanding abstract ideas."
+          },
+          {
+            "id": 84,
+            "text": "Have a high opinion of myself."
+          },
+          {
+            "id": 85,
+            "text": "Waste my time."
+          },
+          {
+            "id": 86,
+            "text": "Feel that I'm unable to deal with things."
+          },
+          {
+            "id": 87,
+            "text": "Love life."
+          },
+          {
+            "id": 88,
+            "text": "Tend to vote for conservative political candidates."
+          },
+          {
+            "id": 89,
+            "text": "Am not interested in other people's problems."
+          },
+          {
+            "id": 90,
+            "text": "Rush into things."
+          },
+          {
+            "id": 91,
+            "text": "Get stressed out easily."
+          },
+          {
+            "id": 92,
+            "text": "Keep others at a distance."
+          },
+          {
+            "id": 93,
+            "text": "Like to get lost in thought."
+          },
+          {
+            "id": 94,
+            "text": "Distrust people."
+          },
+          {
+            "id": 95,
+            "text": "Know how to get things done."
+          },
+          {
+            "id": 96,
+            "text": "Am not easily annoyed."
+          },
+          {
+            "id": 97,
+            "text": "Avoid crowds."
+          },
+          {
+            "id": 98,
+            "text": "Do not enjoy going to art museums."
+          },
+          {
+            "id": 99,
+            "text": "Obstruct others' plans."
+          },
+          {
+            "id": 100,
+            "text": "Leave my belongings around."
+          },
+          {
+            "id": 101,
+            "text": "Feel comfortable with myself."
+          },
+          {
+            "id": 102,
+            "text": "Wait for others to lead the way."
+          },
+          {
+            "id": 103,
+            "text": "Don't understand people who get emotional."
+          },
+          {
+            "id": 104,
+            "text": "Take no time for others."
+          },
+          {
+            "id": 105,
+            "text": "Break my promises."
+          },
+          {
+            "id": 106,
+            "text": "Am not bothered by difficult social situations."
+          },
+          {
+            "id": 107,
+            "text": "Like to take it easy."
+          },
+          {
+            "id": 108,
+            "text": "Am attached to conventional ways."
+          },
+          {
+            "id": 109,
+            "text": "Get back at others."
+          },
+          {
+            "id": 110,
+            "text": "Put little time and effort into my work."
+          },
+          {
+            "id": 111,
+            "text": "Am able to control my cravings."
+          },
+          {
+            "id": 112,
+            "text": "Act wild and crazy."
+          },
+          {
+            "id": 113,
+            "text": "Am not interested in theoretical discussions."
+          },
+          {
+            "id": 114,
+            "text": "Boast about my virtues."
+          },
+          {
+            "id": 115,
+            "text": "Have difficulty starting tasks."
+          },
+          {
+            "id": 116,
+            "text": "Remain calm under pressure."
+          },
+          {
+            "id": 117,
+            "text": "Look at the bright side of life."
+          },
+          {
+            "id": 118,
+            "text": "Believe that we should be tough on crime."
+          },
+          {
+            "id": 119,
+            "text": "Try not to think about the needy."
+          },
+          {
+            "id": 120,
+            "text": "Act without thinking."
+          }
+        ],
+        "response_format": "Answer strictly in the JSON format: a JSON array of 120 objects.\n   Each object must have {{\"question_id\": number from 1 to 120, \"answer\": number from 1 to 5}}.\n   Example of format: [{{\"question_id\": 1, \"answer\": 3}}, {{\"question_id\": 2, \"answer\": 5}}, ..., {{\"question_id\": 120, \"answer\": 4}}]\n\n   Output ONLY the pure JSON array. No additional text, explanations, markdown, or anything else.\n   "
+      },
+      "summary": {
+        "mean_similarity": 0.6630208333333334,
+        "mean_avg_diff": 1.3479166666666667,
+        "mean_pearson_corr": 0.049158797414019725,
+        "total_participants": 8,
+        "mean_mae_35": 36.388785851465066,
+        "mean_similarity_35": 0.6361121414853493,
+        "mean_pearson_35": -0.13280110577945814,
+        "mean_kappa_35": -0.0740391564555713,
+        "mean_similarity_facets": 0.634511176328248,
+        "mean_similarity_traits": 0.6457179324279569,
+        "mean_mae_per_dim": {
+          "openness": 74.202804436984,
+          "facet_imagination": 60.796957867312855,
+          "facet_artistic_interests": 63.018315164983306,
+          "facet_emotionality": 21.59550314695602,
+          "facet_adventurousness": 58.49500310996509,
+          "facet_intellect": 56.17082666043229,
+          "facet_liberalism": 42.30736974449765,
+          "conscientiousness": 20.493767974609256,
+          "facet_self_efficacy": 31.443778120527092,
+          "facet_orderliness": 37.29786099875945,
+          "facet_dutifulness": 62.339021346875654,
+          "facet_achievement_striving": 14.181335914494213,
+          "facet_self_discipline": 20.635750570029437,
+          "facet_cautiousness": 18.41188581052019,
+          "extraversion": 34.10804897954754,
+          "facet_friendliness": 21.573759189010346,
+          "facet_gregariousness": 16.676428479993362,
+          "facet_assertiveness": 40.16150275583365,
+          "facet_activity_level": 29.1900875784457,
+          "facet_excitement_seeking": 62.908330591282294,
+          "facet_cheerfulness": 40.05117838181227,
+          "agreeableness": 27.98998619986712,
+          "facet_trust": 31.286565431289787,
+          "facet_morality": 31.216163553594413,
+          "facet_altruism": 16.620809255955578,
+          "facet_cooperation": 35.665946735769054,
+          "facet_modesty": 69.95881748124637,
+          "facet_sympathy": 7.799655800884935,
+          "neuroticism": 20.346426195013606,
+          "facet_anxiety": 31.906670998020346,
+          "facet_anger": 38.94602762088073,
+          "facet_depression": 27.88351406769425,
+          "facet_self_consciousness": 19.93090957439624,
+          "facet_immoderation": 53.07548761219792,
+          "facet_vulnerability": 34.921007451595216
+        }
+      },
+      "final_participants_scores": [
+        {
+          "similarity": 0.65625,
+          "avg_diff": 1.375,
+          "pearson_corr": -0.09723630887418769,
+          "mae_35": 31.945257432157256,
+          "mae_per_dim": {
+            "openness": 55.702068563276555,
+            "facet_imagination": 31.017185263811733,
+            "facet_artistic_interests": 77.82843531075079,
+            "facet_emotionality": 36.414747406989136,
+            "facet_adventurousness": 63.53524079488534,
+            "facet_intellect": 48.72748649148609,
+            "facet_liberalism": 9.382373587920966,
+            "conscientiousness": 12.422878988825346,
+            "facet_self_efficacy": 46.41852532010441,
+            "facet_orderliness": 22.72183095803007,
+            "facet_dutifulness": 49.03669875101866,
+            "facet_achievement_striving": 0.5801155287988422,
+            "facet_self_discipline": 20.883561114140065,
+            "facet_cautiousness": 33.215301462446575,
+            "extraversion": 63.2097477986984,
+            "facet_friendliness": 28.458132028114846,
+            "facet_gregariousness": 25.05266832897877,
+            "facet_assertiveness": 46.52621491601744,
+            "facet_activity_level": 11.5784704919418,
+            "facet_excitement_seeking": 60.27135452625129,
+            "facet_cheerfulness": 40.59524742462644,
+            "agreeableness": 11.681487588408231,
+            "facet_trust": 31.67594417101202,
+            "facet_morality": 0.40590009552215633,
+            "facet_altruism": 13.050951971960899,
+            "facet_cooperation": 54.444561282759224,
+            "facet_modesty": 30.40492541135177,
+            "facet_sympathy": 7.2600813641474815,
+            "neuroticism": 16.092119933191555,
+            "facet_anxiety": 9.376160561859535,
+            "facet_anger": 16.90868217480329,
+            "facet_depression": 42.74118553668677,
+            "facet_self_consciousness": 19.12235579986907,
+            "facet_immoderation": 42.65942520710024,
+            "facet_vulnerability": 38.68194396971796
+          },
+          "similarity_35": 0.6805474256784275,
+          "pearson_35": 0.12202485390895106,
+          "kappa_35": -0.0059880239520957446,
+          "mean_similarity_facets": 0.6803414309156322,
+          "mean_similarity_traits": 0.6817833942551998
+        },
+        {
+          "similarity": 0.6354166666666666,
+          "avg_diff": 1.4583333333333333,
+          "pearson_corr": 0.0973483396963724,
+          "mae_35": 37.410058215930114,
+          "mae_per_dim": {
+            "openness": 93.5432139782217,
+            "facet_imagination": 51.120159217213384,
+            "facet_artistic_interests": 74.19124252978938,
+            "facet_emotionality": 20.473460217121783,
+            "facet_adventurousness": 50.39103286540319,
+            "facet_intellect": 61.38252204385982,
+            "facet_liberalism": 32.60099495150871,
+            "conscientiousness": 30.595141643146235,
+            "facet_self_efficacy": 26.618646459606225,
+            "facet_orderliness": 39.876111647279004,
+            "facet_dutifulness": 43.19980263732384,
+            "facet_achievement_striving": 17.784130113796095,
+            "facet_self_discipline": 30.710044513895923,
+            "facet_cautiousness": 16.19433072001482,
+            "extraversion": 50.06019460188577,
+            "facet_friendliness": 8.741080368204507,
+            "facet_gregariousness": 32.42799318820033,
+            "facet_assertiveness": 65.54837634866851,
+            "facet_activity_level": 17.155653153457934,
+            "facet_excitement_seeking": 87.0337874947796,
+            "facet_cheerfulness": 52.68841357600745,
+            "agreeableness": 34.719614423320195,
+            "facet_trust": 8.990104930564371,
+            "facet_morality": 43.1993122774212,
+            "facet_altruism": 21.54062948267847,
+            "facet_cooperation": 0.00876142970400906,
+            "facet_modesty": 73.57555887289868,
+            "facet_sympathy": 5.827389820482267,
+            "neuroticism": 13.06910999631424,
+            "facet_anxiety": 24.51927582600763,
+            "facet_anger": 53.71775147151561,
+            "facet_depression": 19.23489252654906,
+            "facet_self_consciousness": 16.54739806988448,
+            "facet_immoderation": 46.10939251839936,
+            "facet_vulnerability": 45.95651364242997
+          },
+          "similarity_35": 0.6258994178406989,
+          "pearson_35": -0.22180200088356944,
+          "kappa_35": -0.07006369426751591,
+          "mean_similarity_facets": 0.6375450790284447,
+          "mean_similarity_traits": 0.5560254507142237
+        },
+        {
+          "similarity": 0.7395833333333334,
+          "avg_diff": 1.0416666666666667,
+          "pearson_corr": 0.1598827331354653,
+          "mae_35": 35.86714946394381,
+          "mae_per_dim": {
+            "openness": 53.76387632034282,
+            "facet_imagination": 71.57273226058925,
+            "facet_artistic_interests": 14.191242529789378,
+            "facet_emotionality": 9.91913169570887,
+            "facet_adventurousness": 39.39103286540319,
+            "facet_intellect": 54.64664441433025,
+            "facet_liberalism": 49.60099495150871,
+            "conscientiousness": 31.06623872393584,
+            "facet_self_efficacy": 38.42367994985534,
+            "facet_orderliness": 39.876111647279004,
+            "facet_dutifulness": 66.19980263732384,
+            "facet_achievement_striving": 28.543642907159892,
+            "facet_self_discipline": 19.22332242246739,
+            "facet_cautiousness": 24.19433072001482,
+            "extraversion": 1.8625581543672354,
+            "facet_friendliness": 23.70267757336387,
+            "facet_gregariousness": 8.572006811799668,
+            "facet_assertiveness": 9.758575798680795,
+            "facet_activity_level": 37.70796505633439,
+            "facet_excitement_seeking": 55.0337874947796,
+            "facet_cheerfulness": 24.68841357600745,
+            "agreeableness": 50.7032270116369,
+            "facet_trust": 10.264270530746671,
+            "facet_morality": 81.1993122774212,
+            "facet_altruism": 9.21183745260197,
+            "facet_cooperation": 9.008761429704009,
+            "facet_modesty": 93.59643633694486,
+            "facet_sympathy": 0.7198429864218951,
+            "neuroticism": 24.111363962490827,
+            "facet_anxiety": 69.51927582600763,
+            "facet_anger": 53.71775147151561,
+            "facet_depression": 24.76510747345094,
+            "facet_self_consciousness": 34.528369807219974,
+            "facet_immoderation": 67.10939251839936,
+            "facet_vulnerability": 24.956513642429968
+          },
+          "similarity_35": 0.641328505360562,
+          "pearson_35": -0.08166162485485642,
+          "kappa_35": -0.13718411552346588,
+          "mean_similarity_facets": 0.6353856776449134,
+          "mean_similarity_traits": 0.6769854716544528
+        },
+        {
+          "similarity": 0.6208333333333333,
+          "avg_diff": 1.5166666666666666,
+          "pearson_corr": 0.03664042569842891,
+          "mae_35": 40.33267829382908,
+          "mae_per_dim": {
+            "openness": 93.8020588860949,
+            "facet_imagination": 89.47775472763708,
+            "facet_artistic_interests": 85.8623402896037,
+            "facet_emotionality": 19.57467326800429,
+            "facet_adventurousness": 80.66270591416864,
+            "facet_intellect": 59.926653692053016,
+            "facet_liberalism": 77.64511548705221,
+            "conscientiousness": 7.890812542529602,
+            "facet_self_efficacy": 14.314260752542395,
+            "facet_orderliness": 46.71738974244971,
+            "facet_dutifulness": 90.91978136183627,
+            "facet_achievement_striving": 9.81745510822202,
+            "facet_self_discipline": 11.726074229614369,
+            "facet_cautiousness": 0.04358033960454577,
+            "extraversion": 21.299695363238754,
+            "facet_friendliness": 25.39314678635816,
+            "facet_gregariousness": 0.6530455909946795,
+            "facet_assertiveness": 38.812843959967864,
+            "facet_activity_level": 50.31826161204867,
+            "facet_excitement_seeking": 49.29439284931867,
+            "facet_cheerfulness": 42.23263895060774,
+            "agreeableness": 14.85561577610315,
+            "facet_trust": 74.21594209283609,
+            "facet_morality": 0.06012956401309566,
+            "facet_altruism": 22.679818116580975,
+            "facet_cooperation": 79.20170280090898,
+            "facet_modesty": 82.25834930379017,
+            "facet_sympathy": 17.391309032488095,
+            "neuroticism": 28.113110888057804,
+            "facet_anxiety": 24.21197177820659,
+            "facet_anger": 31.439925365688396,
+            "facet_depression": 24.79287073409023,
+            "facet_self_consciousness": 9.525514620611432,
+            "facet_immoderation": 56.42374020489271,
+            "facet_vulnerability": 30.089058551802964
+          },
+          "similarity_35": 0.5966732170617092,
+          "pearson_35": -0.34976565128835774,
+          "kappa_35": -0.08292079207920766,
+          "mean_similarity_facets": 0.5847725177240021,
+          "mean_similarity_traits": 0.6680774130879515
+        }
+      ]
+    }
+  }
+}

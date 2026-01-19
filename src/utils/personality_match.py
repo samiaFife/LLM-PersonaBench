@@ -1,5 +1,7 @@
+import time
 import numpy as np
 import scipy.stats as sps
+from concurrent.futures import ThreadPoolExecutor
 from langchain_core.prompts import ChatPromptTemplate
 from sklearn.metrics import cohen_kappa_score
 
@@ -131,6 +133,44 @@ def aggregate_cluster_five_factor_metrics(participants_scores: list[dict]) -> di
     out["mean_mae_per_dim"] = {dim: _safe_mean(vals) for dim, vals in mae_per_dim_collect.items()}
 
     return out
+
+
+def evaluate_participants_batch(participants_df, genotype, task, model, batch_size=1):
+    """
+    Оценивает участников через fitness_function: по одному (batch_size<=1) или
+    пачками с параллельными запросами к модели (batch_size>1).
+
+    Вход:
+        participants_df: DataFrame с участниками (как от .iterrows()).
+        genotype, task, model: как для fitness_function.
+        batch_size: 1 или None — последовательно; 5, 10, 20 — макс. число
+                    одновременных запросов к модели (ThreadPoolExecutor).
+
+    Выход:
+        Список словарей score (как от fitness_function) в том же порядке, что
+        participants_df.iterrows(). Средние считаются по ним так же, как раньше.
+    """
+    bs = int(batch_size or 0)
+    if bs <= 1:
+        return [
+            fitness_function(participant, genotype, task, model)
+            for _, participant in participants_df.iterrows()
+        ]
+
+    items = [(i, p) for i, p in participants_df.iterrows()]
+    n = len(items)
+
+    def _run_one(idx_p):
+        _idx, p = idx_p
+        return fitness_function(p, genotype, task, model)
+
+    t0 = time.perf_counter()
+    with ThreadPoolExecutor(max_workers=bs) as ex:
+        results = list(ex.map(_run_one, items))
+    wall_s = time.perf_counter() - t0
+    # Запросы уходят параллельно: до bs потоков вызывают model.generate одновременно
+    print(f"  [batch] {n} participants, max_concurrent={bs}, wall_time={wall_s:.1f}s")
+    return results
 
 
 def fitness_function(participant, genotype, task, model):
