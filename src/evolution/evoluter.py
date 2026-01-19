@@ -2,10 +2,12 @@ import os
 import random
 import json
 import numpy as np
+import time
 
 from src.evolution.operators import my_mutate, my_crossover
 from src.evolution.utils import clean_evoprompt_response, validate_and_repair_genotype, genotype_to_evoprompt_str, parse_str_to_genotype
 from src.utils.save_result import save_log  # Опционально для логов
+from src.utils.time import TimeEstimator, format_time
 
 
 class Evoluter:
@@ -125,12 +127,19 @@ class GAEvoluter(Evoluter):
         GA цикл.
         """
         print(f"🧬 Старт GA эволюции: pop_size={self.population_size}, generations={self.num_generations}")
+        
+        # Инициализация планировщика времени
+        time_estimator = TimeEstimator(total_items=self.num_generations + 1)  # +1 для Gen 0
+        time_estimator.start()
+        time_estimator.start_item()
 
         # Первая оценка
         self.evaluate_population()
         best_score = self.scores[0]
         best_prompt = self.population[0]
         best_detailed = self.detailed_scores_per_prompt[0]
+        
+        gen0_time = time_estimator.finish_item()
         
         # Сохраняем все промты и скоры для поколения 0
         generation_data = {
@@ -144,9 +153,12 @@ class GAEvoluter(Evoluter):
             "population_detailed_scores": [s.copy() for s in self.detailed_scores_per_prompt]  # Детальные скоры для каждого промта
         }
         self.generation_logs.append(generation_data)
-        print(f"Gen 0: best = {best_score:.4f}, mean = {np.mean(self.scores):.4f}")
+        
+        progress_info = time_estimator.get_progress_info(completed_items=1)
+        print(f"Gen 0: best = {best_score:.4f}, mean = {np.mean(self.scores):.4f} | {progress_info}")
 
         for gen in range(1, self.num_generations + 1):
+            time_estimator.start_item()
             new_population = []
 
             # Элитизм: сохраняем топ-2
@@ -196,6 +208,8 @@ class GAEvoluter(Evoluter):
             best_prompt = self.population[0]
             best_detailed = self.detailed_scores_per_prompt[0]
             
+            gen_time = time_estimator.finish_item()
+            
             # Сохраняем все промты и скоры для текущего поколения
             generation_data = {
                 "generation": gen,
@@ -208,6 +222,9 @@ class GAEvoluter(Evoluter):
                 "population_detailed_scores": [s.copy() for s in self.detailed_scores_per_prompt]  # Детальные скоры для каждого промта
             }
             self.generation_logs.append(generation_data)
-            print(f"Gen {gen}: best = {best_score:.4f}, mean = {np.mean(self.scores):.4f}")
+            
+            progress_info = time_estimator.get_progress_info(completed_items=gen + 1)
+            print(f"Gen {gen}: best = {best_score:.4f}, mean = {np.mean(self.scores):.4f} | {progress_info}")
 
-        print(f"🧬 Эволюция завершена. Финальный best_score: {self.scores[0]:.4f}")
+        total_evolution_time = time_estimator.get_elapsed()
+        print(f"🧬 Эволюция завершена. Финальный best_score: {self.scores[0]:.4f} | Общее время: {format_time(total_evolution_time)}")

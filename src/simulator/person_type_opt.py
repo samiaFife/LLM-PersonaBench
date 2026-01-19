@@ -6,7 +6,7 @@ import random
 
 from src.models.registry import get_model
 
-from src.utils.time import format_time
+from src.utils.time import format_time, TimeEstimator
 from src.utils.save_result import save_log
 from src.utils.personality_match import (
     evaluate_participants_batch,
@@ -135,10 +135,15 @@ def run_experiment(config):
         'response_format': system['response_format'],
     }
 
+    # Инициализация планировщика времени для всего эксперимента
+    clusters_list = config['data']['clusters']
+    experiment_time_estimator = TimeEstimator(total_items=len(clusters_list))
+    experiment_time_estimator.start()
 
-    for cluster in config['data']['clusters']:
+    for cluster_idx, cluster in enumerate(clusters_list):
         # Запуск таймера для кластера
         cluster_start_time = time.time()
+        experiment_time_estimator.start_item()
         cluster_log = {
             'cluster_id': cluster,
             'start_time': cluster_start_time,
@@ -171,7 +176,8 @@ def run_experiment(config):
 
         # === ЭВОЛЮЦИОННАЯ ОПТИМИЗАЦИЯ (если включена в config) ===
         if 'evolution' in config and config['evolution'].get('algorithm'):
-            print(f"🧬 Запуск эволюционной оптимизации для кластера {cluster}")
+            cluster_progress = experiment_time_estimator.get_progress_info(completed_items=cluster_idx)
+            print(f"🧬 Запуск эволюционной оптимизации для кластера {cluster} | {cluster_progress}")
 
         evo_args = parse_args_from_yaml(config['evolution'])
         evaluator = MyEvaluator(evo_args, task, model, fixed_modifiers, config=config)
@@ -259,6 +265,10 @@ def run_experiment(config):
         # Финальное время кластера
         cluster_total_time = time.time() - cluster_start_time
         
+        # Обновляем планировщик эксперимента
+        experiment_time_estimator.finish_item()
+        experiment_progress = experiment_time_estimator.get_progress_info(completed_items=cluster_idx + 1)
+        
         print(f"\n{'='*70}")
         print(f"📈 ИТОГОВЫЕ СРЕДНИЕ ПОКАЗАТЕЛИ КЛАСТЕРА {cluster}")
         print(f"{'='*70}")
@@ -276,6 +286,7 @@ def run_experiment(config):
         print(f"⏱️  Статистика времени кластера:")
         print(f"- Общее время: {format_time(cluster_total_time)}")
         print(f"- Всего обработано участников: {n_participants}")
+        print(f"- Прогресс эксперимента: {experiment_progress}")
         print(f"{'='*70}")
         print(f"✅ Обработка кластера {cluster} завершена\n")
         
