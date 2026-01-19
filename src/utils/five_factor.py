@@ -1,15 +1,18 @@
 """
 Расчёт OCEAN (5 черт) и 30 аспектов (фасетов) по ответам IPIP-NEO-120
-с помощью библиотеки five-factor-e (ipipneo)
+с помощью библиотеки five-factor-e (ipipneo).
 """
 
 from __future__ import annotations
 
 from typing import Any
 
-# Импорт из five-factor-e
 from ipipneo import IpipNeo
+from ipipneo.model import FacetLevel, NormCubic
+from ipipneo.utility import big5_ocean_is_valid, create_big5_dict
 
+import ipipneo.facet as _ipipneo_facet
+from ipipneo import norm as _ipipneo_norm
 
 # Порядок и имена колонок в датасете (5 черт + 30 фасетов)
 OCEAN_AND_FACET_ORDER = [
@@ -102,6 +105,64 @@ def sex_to_ipipneo(sex: Any) -> str:
     return "N"
 
 
+def _personality_no_clamp(
+    self: Any,
+    size: int,
+    big5: dict,
+    traits: dict,
+    label: str,
+    norm_scale_min: int | None = None,
+    norm_scale_max: int | None = None,
+    facet_score_level_low: int | None = None,
+    facet_score_level_high: int | None = None,
+) -> dict:
+    """Вариант Facet.personality без обрезки X[i] в 1 и 99 (кубическая формула как есть)."""
+    big5_ocean_is_valid(label=label)
+    big5, traits = big5.get(label, 0), traits.get(label, [])
+    facet_score_level_low_value = (
+        facet_score_level_low if facet_score_level_low is not None else FacetLevel.LOW.value
+    )
+    facet_score_level_high_value = (
+        facet_score_level_high if facet_score_level_high is not None else FacetLevel.HIGH.value
+    )
+    X = [0] * size
+    Y = [0] * size
+    try:
+        for i in range(1, 7):
+            Y[i] = traits[i]
+            if int(traits[i]) < facet_score_level_low_value:
+                Y[i] = "low"
+            elif facet_score_level_low_value <= int(traits[i]) <= facet_score_level_high_value:
+                Y[i] = "average"
+            elif int(traits[i]) > facet_score_level_high_value:
+                Y[i] = "high"
+            X[i] = (
+                NormCubic.CONST1.value
+                - (NormCubic.CONST2.value * traits[i])
+                + (NormCubic.CONST3.value * traits[i] ** 2)
+                - (NormCubic.CONST4.value * traits[i] ** 3)
+            )
+    except IndexError as e:
+        raise BaseException(f"The number of questions setting is wrong: {str(e)}") from e
+    return create_big5_dict(label=label, big5=big5, x=X, y=Y) or {}
+
+
+def _normalize_no_clamp(
+    normc: dict,
+    percent: dict,
+    norm_scale_min: int | None = None,
+    norm_scale_max: int | None = None,
+) -> dict:
+    """Вариант Norm.normalize без обрезки в 1 и 99 — возвращаем percent как есть."""
+    return {
+        "O": percent.get("O", 0),
+        "C": percent.get("C", 0),
+        "E": percent.get("E", 0),
+        "A": percent.get("A", 0),
+        "N": percent.get("N", 0),
+    }
+
+
 def _personalities_to_flat_dict(personalities: list[dict]) -> dict[str, float]:
     """
     Разворачивает person['result']['personalities'] из ipipneo в плоский словарь
@@ -150,6 +211,10 @@ def compute_ocean_facets(
     """
     if not model_answers or len(model_answers) < 120:
         return None
+    _saved_facet = _ipipneo_facet.Facet.personality
+    _saved_norm = _ipipneo_norm.Norm.normalize
+    _ipipneo_facet.Facet.personality = _personality_no_clamp
+    _ipipneo_norm.Norm.normalize = _normalize_no_clamp
     try:
         ipip = IpipNeo(question=question)
         answers = answers_dict_to_ipipneo_format(model_answers)
@@ -166,6 +231,9 @@ def compute_ocean_facets(
         res = ipip.compute(sex=sex_to_ipipneo(sex), age=a, answers=answers)
     except Exception:
         return None
+    finally:
+        _ipipneo_facet.Facet.personality = _saved_facet
+        _ipipneo_norm.Norm.normalize = _saved_norm
     person = res.get("person") or res
     result = person.get("result") if isinstance(person, dict) else None
     if not result:
