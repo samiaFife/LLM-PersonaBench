@@ -82,22 +82,20 @@ def personality_mutation(prompt_str, mutation_rate, evolution_model, config):
         optimization_instruction = get_optimization_fields_instruction(config)
         
         # Шаблон мутации, аналогичный EvoPrompt template_ga.py
-        mutation_template = f"""As an expert in personality psychology and prompt engineering, 
-        improve the following personality description for better simulation of human behavior in psychological questionnaires.
+        mutation_template = f"""Optimize the following personality prompt components to better simulate human personality in psychological questionnaires, based on Big Five (OCEAN) model and IPIP-NEO facets. The optimized prompt will be used by an LLM to role-play a consistent personality while completing the IPIP-NEO-120 questionnaire, ensuring responses align with one coherent profile (not random or inconsistent).
 
-        {optimization_instruction}
+        Focus on improving: {optimization_instruction}
 
-        Current personality description (JSON format):
+        Current prompt JSON:
         {prompt_str}
 
-        Improvement instructions:
-        1. Make ONE specific change to improve psychological accuracy
-        2. Enhance clarity for LLM interpretation  
-        3. Maintain consistency with personality theory
-        4. Keep behavioral predictions specific and testable
+        Requirements:
+        1. Make small, targeted changes to improve psychological coherence, aligned with Big Five/IPIP-NEO research (e.g., refine traits like Neuroticism to include facets such as Anxiety or Depression).
+        2. Ensure the optimized descriptions are psychologically coherent and consistent, with trait and facet formulations behaviorally grounded using specific, observable examples of manifestations in behaviors or questionnaire responses (e.g., 'often disagrees with statements about feeling calm under pressure'), without rigid if-then rules.
+        3. Maintain the original meaning and personality profile, promoting stable, reproducible responses in repeated IPIP-NEO-120 tests (optimization evaluated via similarity in questionnaire answers for high test-retest reliability).
+        4. Make the language more natural and precise for LLM role-playing.
 
-        {get_json_structure_instruction()}
-        """
+        {get_json_structure_instruction()}"""
         
         # Вызываем LLM для мутации через новую обертку
         mutated = llm_query(
@@ -143,22 +141,22 @@ def personality_crossover(parent1_str, parent2_str, evolution_model, config, fix
         optimization_instruction = get_optimization_fields_instruction(config)
         
         # Шаблон кроссовера, аналогичный EvoPrompt
-        crossover_template = f"""As an expert in personality psychology, create two new personality descriptions 
-        by combining the best elements from two existing descriptions.
+        crossover_template = f"""Combine and optimize formulations from two parent personality prompts to create two improved child versions, better simulating human personality in psychological questionnaires based on Big Five (OCEAN) model and IPIP-NEO facets. The resulting prompts will be used by an LLM to role-play a consistent personality while completing the IPIP-NEO-120 questionnaire, ensuring responses align with one coherent profile (not random or inconsistent).
 
-        {optimization_instruction}
+        Focus on optimizing these fields: {optimization_instruction}
 
-        Parent 1 (JSON):
+        Parent1 JSON:
         {json.dumps(parent1, indent=2)}
 
-        Parent 2 (JSON):
+        Parent2 JSON:
         {json.dumps(parent2, indent=2)}
 
-        Combination instructions:
-        1. For child 1: Take the most effective elements from parent 1 and supplement with complementary elements from parent 2
-        2. For child 2: Take the most effective elements from parent 2 and supplement with complementary elements from parent 1  
-        3. Ensure both children are psychologically coherent and consistent
-        4. Maintain the exact same JSON structure
+        Requirements:
+        1. Blend the best elements from both parents, making changes aligned with Big Five/IPIP-NEO research (e.g., merge Extraversion facets while preserving psychological accuracy).
+        2. Ensure combined formulations are specific and behaviorally grounded with observable examples of how traits/facets manifest in behaviors or questionnaire responses (e.g., 'frequently agrees with items about enjoying group activities'), without rigid if-then rules.
+        3. Maintain consistency with the original profiles, ensuring stable, reproducible responses in repeated IPIP-NEO-120 tests (optimization evaluated via similarity in questionnaire answers for high test-retest reliability).
+        4. Make the two children psychologically coherent and consistent.
+        5. Maintain the exact same JSON structure.
 
         Return TWO separate JSON objects in this format:
         {{

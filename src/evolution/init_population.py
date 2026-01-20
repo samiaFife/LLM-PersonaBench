@@ -37,18 +37,18 @@ def init_population(base_genotype, config, pop_size, evolution_model):
         
     population = [base_str]
     for _ in range(1, pop_size):
-        para_prompt = f"""Optimize the following personality prompt components to better simulate human personality in psychological questionnaires. 
+        para_prompt = f"""Optimize the following personality prompt components to better simulate human personality in psychological questionnaires, based on Big Five (OCEAN) model and IPIP-NEO facets. The optimized prompt will be used by an LLM to role-play a consistent personality while completing the IPIP-NEO-120 questionnaire, ensuring responses align with one coherent profile (not random or inconsistent).
         Focus on improving: {optimizations_text}
-        
+
         Current prompt JSON:
         {base_str}
-        
+
         Requirements:
-        1. Make the language more natural and psychologically accurate
-        2. Ensure formulations are specific and behaviorally grounded
-        3. Maintain consistency with the original personality profile
-        4. Improve clarity for LLM understanding
-        
+        1. Make the language more natural, psychologically accurate, and aligned with Big Five/IPIP-NEO research (e.g., ensure traits like Extraversion include facets such as Activity Level or Assertiveness).
+        2. Ensure formulations are specific and behaviorally grounded with observable examples of how traits/facets manifest in everyday behaviors or questionnaire responses (e.g., 'tends to strongly agree with statements about seeking excitement in social settings'), without rigid if-then rules.
+        3. Maintain consistency with the original personality profile, ensuring stable, reproducible responses in repeated IPIP-NEO-120 tests (optimization evaluated via similarity in questionnaire answers for high test-retest reliability).
+        4. Improve clarity for LLM understanding, promoting coherent role-playing.
+
         response_format: {instruction}"""
         variant = paraphrase(para_prompt, evolution_model, temperature=0.7)
         population.append(variant)

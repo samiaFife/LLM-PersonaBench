@@ -24,6 +24,26 @@ class MyEvaluator(Evaluator):
         Возвращает кортеж: (mean_similarity, detailed_scores)
         где detailed_scores - список словарей с метриками по каждому участнику
         """
+        # Проверка: dev_participants должен быть установлен перед вызовом forward
+        # Проверяем для DataFrame (используем .empty) и для списка (используем len)
+        if self.dev_participants is None:
+            raise ValueError(
+                "dev_participants не установлен! Установите evaluator.dev_participants перед вызовом forward(). "
+                "Это должно быть сделано в person_type_opt.py после создания evaluator."
+            )
+        # Для DataFrame используем .empty, для списка - len
+        if hasattr(self.dev_participants, 'empty'):
+            if self.dev_participants.empty:
+                raise ValueError(
+                    "dev_participants пуст! Установите evaluator.dev_participants перед вызовом forward(). "
+                    "Это должно быть сделано в person_type_opt.py после создания evaluator."
+                )
+        elif len(self.dev_participants) == 0:
+            raise ValueError(
+                "dev_participants пуст! Установите evaluator.dev_participants перед вызовом forward(). "
+                "Это должно быть сделано в person_type_opt.py после создания evaluator."
+            )
+        
         # Нужен config для parse_str_to_genotype
         if config is None:
             config = getattr(self, 'config', None)
