@@ -11,7 +11,7 @@ prompt:
 # Настройки данных
 data:
   file_path: "data/raw/df_ipipneo_120_clusters"
-  clusters: [1, 2]
+  clusters: [1]
   num_participants: 20 # train:мин30-50 test:40 # посчитать сколько по токенам затраты
   save_every_n: 2
 
@@ -26,8 +26,8 @@ model:
 # Настройки EvoPrompt
 evolution:
   algorithm: "GA"  # GA или DE
-  population_size: 3 # поколений 4, 6, 10
-  num_generations: 2 # 3, 5
+  population_size: 3 # размер популяции - кол-во промптов (особей) в одном поколении
+  num_generations: 4 # количество поколений - кол-во итераций эволюционного алгоритма
   mutation_rate: 0.15
   crossover_rate: 0.8
   selection_method: "tournament" # tournament, roulette

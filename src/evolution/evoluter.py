@@ -129,11 +129,11 @@ class GAEvoluter(Evoluter):
         print(f"🧬 Старт GA эволюции: pop_size={self.population_size}, generations={self.num_generations}")
         
         # Инициализация планировщика времени
-        time_estimator = TimeEstimator(total_items=self.num_generations + 1)  # +1 для Gen 0
+        time_estimator = TimeEstimator(total_items=self.num_generations)  # Gen 0 считается первым поколением
         time_estimator.start()
         time_estimator.start_item()
 
-        # Первая оценка
+        # Первая оценка (Gen 0)
         self.evaluate_population()
         best_score = self.scores[0]
         best_prompt = self.population[0]
@@ -157,7 +157,9 @@ class GAEvoluter(Evoluter):
         progress_info = time_estimator.get_progress_info(completed_items=1)
         print(f"Gen 0: best = {best_score:.4f}, mean = {np.mean(self.scores):.4f} | {progress_info}")
 
-        for gen in range(1, self.num_generations + 1):
+        # Эволюционные итерации: Gen 1 до Gen (num_generations-1)
+        # Если num_generations=4, то будет Gen 0, 1, 2, 3 (всего 4 поколения)
+        for gen in range(1, self.num_generations):
             time_estimator.start_item()
             new_population = []
 

@@ -1,5 +1,5 @@
 {
-  "experiment_id": "cluster2_ga_20260120_113139",
+  "experiment_id": "cluster2_ga_20260120_132210",
   "status": "started",
   "config": {
     "name": "cluster2_genetic_optimization",
@@ -12,8 +12,7 @@
     "data": {
       "file_path": "data/raw/df_ipipneo_120_clusters",
       "clusters": [
-        1,
-        2
+        1
       ],
       "num_participants": 20,
       "save_every_n": 2
@@ -28,7 +27,7 @@
     "evolution": {
       "algorithm": "GA",
       "population_size": 3,
-      "num_generations": 2,
+      "num_generations": 4,
       "mutation_rate": 0.15,
       "crossover_rate": 0.8,
       "selection_method": "tournament",
@@ -52,8 +51,8 @@
       "save_every_generation": true
     },
     "config_file": "configs\\examples\\cluster2_ga.yaml",
-    "experiment_id": "cluster2_ga_20260120_113139",
-    "results_dir": "D:\\programming\\GitHub\\LLM-PersonaBench\\results_experiments\\cluster2_ga_20260120_113139"
+    "experiment_id": "cluster2_ga_20260120_132210",
+    "results_dir": "D:\\programming\\GitHub\\LLM-PersonaBench\\results_experiments\\cluster2_ga_20260120_132210"
   },
   "clusters": {}
 }

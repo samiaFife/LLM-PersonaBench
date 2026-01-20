@@ -26,8 +26,8 @@ model:
 # Настройки EvoPrompt
 evolution:
   algorithm: "GA"  # GA или DE
-  population_size: 5 # поколения
-  num_generations: 3 # количество генерацией внутри одного поколения
+  population_size: 4 # размер популяции - кол-во промптов (особей) в одном поколении
+  num_generations: 4 # количество поколений - кол-во итераций эволюционного алгоритма
   mutation_rate: 0.15
   crossover_rate: 0.8
   selection_method: "tournament" # tournament, roulette
