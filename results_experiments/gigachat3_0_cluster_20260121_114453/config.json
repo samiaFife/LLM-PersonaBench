@@ -1,0 +1,53 @@
+{
+  "name": "gigachat3_0_1_cluster_genetic_optimization",
+  "description": "Оптимизация промтов для кластеров 0 и 1 с использованием модели GigaChat3-10B-A1.8B",
+  "prompt": {
+    "traits_path": "src/prompt/traits.json",
+    "facets_path": "src/prompt/facets.json",
+    "system_path": "src/prompt/system.json"
+  },
+  "data": {
+    "file_path": "data/raw/df_ipipneo_120_clusters",
+    "clusters": [
+      0,
+      1
+    ],
+    "num_participants": 100,
+    "save_every_n": 2
+  },
+  "model": {
+    "model_name": "ai-sage/GigaChat3-10B-A1.8B",
+    "provider": "cloud",
+    "temperature": 0.7,
+    "timeout": 180,
+    "max_retries": 4
+  },
+  "evolution": {
+    "algorithm": "GA",
+    "population_size": 4,
+    "num_generations": 4,
+    "mutation_rate": 0.15,
+    "crossover_rate": 0.8,
+    "selection_method": "tournament",
+    "participant_batch_size": 15,
+    "timeout": 180,
+    "max_retries": 4,
+    "llm_for_evolution": "ai-sage/GigaChat3-10B-A1.8B",
+    "provider": "cloud",
+    "temperature": 0.7,
+    "genotype_params": {
+      "role_definition": true,
+      "trait_formulations": true,
+      "facet_formulations": true,
+      "intensity_modifiers": false,
+      "critic_formulations": true,
+      "template_structure": false
+    }
+  },
+  "experiment": {
+    "seed": 2026,
+    "save_every_generation": true
+  },
+  "config_file": "configs\\experiments\\gigachat3_0_1_cluster.yaml",
+  "experiment_id": "gigachat3_0_1_cluster_20260121_114453"
+}

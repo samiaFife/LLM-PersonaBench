@@ -210,15 +210,17 @@ def fitness_function(participant, genotype, task, model):
     fitness['pearson_corr'] = 0.0
     lsit_model_ans = []
     lsit_human_ans = []
-    valid_count = 0  # Счетчик валидных ответов (где human_ans is not None)
+    valid_count = 0  # Счетчик валидных ответов (где human_ans is не None/NaN)
     for q_id, model_ans in model_answers.items():
         human_ans = participant['i' + str(q_id)]
+        # пропускаем отсутствующие или NaN ответы человека
+        if human_ans is None or (isinstance(human_ans, float) and np.isnan(human_ans)):
+            continue
         lsit_model_ans.append(model_ans)
         lsit_human_ans.append(human_ans)
-        if human_ans is not None:
-            fitness['similarity'] += 1 - abs(model_ans - human_ans) / 4
-            fitness['avg_diff'] += abs(model_ans - human_ans)
-            valid_count += 1
+        fitness['similarity'] += 1 - abs(model_ans - human_ans) / 4
+        fitness['avg_diff'] += abs(model_ans - human_ans)
+        valid_count += 1
     # Делим только на количество валидных ответов
     if valid_count > 0:
         fitness['similarity'] /= valid_count
@@ -227,7 +229,10 @@ def fitness_function(participant, genotype, task, model):
         # Если нет валидных ответов, возвращаем 0
         fitness['similarity'] = 0.0
         fitness['avg_diff'] = 0.0
-    fitness['pearson_corr'] = sps.pearsonr(lsit_model_ans, lsit_human_ans)
+    if len(lsit_model_ans) >= 2 and len(lsit_human_ans) >= 2:
+        fitness['pearson_corr'] = sps.pearsonr(lsit_model_ans, lsit_human_ans)
+    else:
+        fitness['pearson_corr'] = 0.0
 
     # Five-factor: OCEAN+30 из ответов модели и сравнение с реальным участником
     fitness['model_answers'] = model_answers

@@ -1,6 +1,6 @@
 # Метаинформация
-name: "minimax_m2_full_cluster_genetic_optimization"
-description: "Оптимизация промтов для всех кластеров с использованием модели MiniMaxAI/MiniMax-M2"
+name: "minimax_m2_0_1_cluster_genetic_optimization"
+description: "Оптимизация промтов для кластеров 0 и 1 с использованием модели MiniMaxAI/MiniMax-M2"
 
 # Пути к промптам (опционально). Если не указаны — используются встроенные из src.prompt
 prompt:
@@ -11,7 +11,7 @@ prompt:
 # Настройки данных
 data:
   file_path: "data/raw/df_ipipneo_120_clusters"
-  clusters: [0, 1, 2, 3]
+  clusters: [0, 1]
   num_participants: 100 # train(60%): 60 / test(40%): 40 
   save_every_n: 10
 
@@ -20,8 +20,8 @@ model:
   model_name: "MiniMaxAI/MiniMax-M2"
   provider: "cloud"
   temperature: 0.7
-  timeout: 120
-  max_retries: 2
+  timeout: 240
+  max_retries: 4
 
 # Настройки EvoPrompt
 evolution:
@@ -31,9 +31,9 @@ evolution:
   mutation_rate: 0.15
   crossover_rate: 0.8
   selection_method: "tournament" # tournament, roulette
-  participant_batch_size: 20   # пачка участников в модель (5/10/20); 1 — по одному
-  timeout: 120
-  max_retries: 2
+  participant_batch_size: 10   # пачка участников в модель (5/10/20); 1 — по одному
+  timeout: 240
+  max_retries: 4
 
   # LLM для эволюции
   llm_for_evolution: "MiniMaxAI/MiniMax-M2" 

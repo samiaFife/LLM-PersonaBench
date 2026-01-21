@@ -295,7 +295,9 @@ def run_experiment(config):
             print(f"🧬 Запуск эволюционной оптимизации для кластера {cluster} | {cluster_progress}")
 
             evo_args = parse_args_from_yaml(config['evolution'])
-            evaluator = MyEvaluator(evo_args, task, model, fixed_modifiers, config=config)
+            evaluator = MyEvaluator(
+                evo_args, task, model, fixed_modifiers, template_genotype=base_genotype, config=config
+            )
             evaluator.dev_participants = train_participants  # Train participants как dev-set
             evaluator.logger.info(f"MyEvaluator: установлено {len(train_participants)} участников для оценки (dev_participants)")
 

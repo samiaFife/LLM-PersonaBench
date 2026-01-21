@@ -3,16 +3,17 @@ from external.evoprompt.evaluator import Evaluator  # Base из EvoPrompt
 from src.utils.time import format_time
 from src.utils.save_result import save_log
 from src.utils.personality_match import fitness_function, evaluate_participants_batch
-from .utils import parse_str_to_genotype
+from .utils import parse_str_to_genotype, validate_and_repair_genotype
 
 class MyEvaluator(Evaluator):
-    def __init__(self, args, task, model, fixed_modifiers, config=None):
+    def __init__(self, args, task, model, fixed_modifiers, template_genotype=None, config=None):
         super().__init__(args)
         self.task = task  # Из person_type_opt (вопросы, формат)
         self.model = model  # LLM для generate
         self.fixed_modifiers = fixed_modifiers  # Из system
         self.dev_participants = []  # Устанавливаем позже
         self.config = config  # Сохраняем config для использования в forward
+        self.template_genotype = template_genotype or {}
         # Пачка участников для параллельных запросов к модели (1 = только последовательно)
         cfg = config or {}
         self.participant_batch_size = int((cfg.get('evolution') or {}).get('participant_batch_size', 1) or 1)
@@ -50,7 +51,11 @@ class MyEvaluator(Evaluator):
         if config is None:
             # Если config не передан, создаем минимальный из args
             config = {'evolution': {'genotype_params': {}}}
-        genotype = parse_str_to_genotype(prompt_str, self.fixed_modifiers, config)
+        # Чиним неполный/битый генотип от модели, используя шаблон
+        repaired_str = validate_and_repair_genotype(
+            prompt_str, self.fixed_modifiers, self.template_genotype, config
+        )
+        genotype = parse_str_to_genotype(repaired_str, self.fixed_modifiers, config)
         scores = evaluate_participants_batch(
             self.dev_participants, genotype, self.task, self.model, self.participant_batch_size
         )

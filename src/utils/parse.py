@@ -1,6 +1,9 @@
 import json
 import re
 
+_QUESTION_KEY_PATTERN = re.compile(r'question[_ ]?id', re.IGNORECASE)
+
+
 def _validate_and_convert(data):
     """
     Валидирует и конвертирует список ответов в словарь.
@@ -48,7 +51,19 @@ def parse_response(response_content):
     if not response_content:
         return None
     
-    content = response_content.strip()
+    # Базовая очистка: убираем лишнее форматирование и комментарии
+    def _normalize(text):
+        # убираем обрамление ```json ... ```
+        text = re.sub(r'```(?:json)?', '', text)
+        text = text.replace('```', '')
+        # убираем комментарии вида "# ..." или "// ..."
+        text = re.sub(r'#.*', '', text)
+        text = re.sub(r'//.*', '', text)
+        # унифицируем вариант ключа question_id
+        text = _QUESTION_KEY_PATTERN.sub('question_id', text)
+        return text.strip()
+
+    content = _normalize(response_content)
     
     # Шаг 1: Пытаемся прямой json.loads
     try:
@@ -62,10 +77,35 @@ def parse_response(response_content):
     if json_match:
         json_str = json_match.group(0)
         try:
-            data = json.loads(json_str)
+            data = json.loads(_normalize(json_str))
             return _validate_and_convert(data)
         except json.JSONDecodeError:
             pass
+
+    # Шаг 3: Парсим список словарей без обрамляющего массива/с лишними символами
+    # Формат вида: { "question_id": 1, "answer": 3 }, {"question_id": 2, "answer": 4}, ...
+    pair_pattern = re.compile(
+        r'"?question_id"?\s*[:=]\s*(\d+)[^{}]*?"?answer"?\s*[:=]\s*(\d+)',
+        re.IGNORECASE | re.DOTALL,
+    )
+    pairs = pair_pattern.findall(content)
+    if pairs:
+        data = [{'question_id': int(q), 'answer': int(a)} for q, a in pairs]
+        validated = _validate_and_convert(data)
+        if validated is not None:
+            return validated
+
+    # Шаг 4: Парсим строковый список вида "48. 5" (по одной паре на строку)
+    line_pattern = re.compile(
+        r'^\s*(\d{1,3})\s*[\.\-:)\s]\s*([1-5])\s*$',
+        re.MULTILINE,
+    )
+    pairs = line_pattern.findall(content)
+    if pairs:
+        data = [{'question_id': int(q), 'answer': int(a)} for q, a in pairs]
+        validated = _validate_and_convert(data)
+        if validated is not None:
+            return validated
 
     print(f"⚠️  Ошибка: не удалось распарсить ответ модели как JSON")
     print(f"Первые 500 символов ответа:\n{content[:500]}...\n")

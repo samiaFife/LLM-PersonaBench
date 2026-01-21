@@ -1,5 +1,7 @@
 import json
 
+from src.utils.five_factor import TRAIT_NAMES, FACET_NAMES
+
 # Адаптировано из EvoPrompt utils.py, плюс наши функции для genotype
 def genotype_to_evoprompt_str(genotype, config):
     """
@@ -52,6 +54,40 @@ def clean_evoprompt_response(text):
     
     return text[start:end]
 
+
+def _normalize_trait_keys(d: dict) -> dict:
+    """
+    Приводит ключи trait_formulations к нижнему регистру,
+    чтобы совпадали с колонками датасета (openness, conscientiousness, ...).
+    """
+    normalized = {}
+    for k, v in (d or {}).items():
+        key = str(k).strip()
+        key_lower = key.lower()
+        if key_lower in TRAIT_NAMES:
+            normalized[key_lower] = v
+        else:
+            normalized[key] = v
+    return normalized
+
+
+def _normalize_facet_keys(d: dict) -> dict:
+    """
+    Приводит ключи facet_formulations к нижнему регистру (facet_*)
+    для соответствия колонкам датасета.
+    """
+    normalized = {}
+    for k, v in (d or {}).items():
+        key = str(k).strip()
+        key_lower = key.lower()
+        if key_lower in FACET_NAMES:
+            normalized[key_lower] = v
+        elif key_lower.startswith("facet_") and key_lower.replace(" ", "_") in FACET_NAMES:
+            normalized[key_lower.replace(" ", "_")] = v
+        else:
+            normalized[key] = v
+    return normalized
+
 def parse_str_to_genotype(geno_str, fixed_modifiers, config):
     """
     Парсит строку обратно в genotype, добавляя fixed intensity_modifiers
@@ -75,13 +111,13 @@ def parse_str_to_genotype(geno_str, fixed_modifiers, config):
         
         if params.get('trait_formulations', False):
             if 'trait_formulations' in evo_genotype:
-                full_genotype['trait_formulations'] = dict(evo_genotype['trait_formulations'])
+                full_genotype['trait_formulations'] = _normalize_trait_keys(dict(evo_genotype['trait_formulations']))
             else:
                 raise ValueError("Missing 'trait_formulations' in evolved genotype")
         
         if params.get('facet_formulations', False):
             if 'facet_formulations' in evo_genotype:
-                full_genotype['facet_formulations'] = dict(evo_genotype['facet_formulations'])
+                full_genotype['facet_formulations'] = _normalize_facet_keys(dict(evo_genotype['facet_formulations']))
             else:
                 raise ValueError("Missing 'facet_formulations' in evolved genotype")
         

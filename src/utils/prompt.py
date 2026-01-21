@@ -29,13 +29,20 @@ def build_full_prompt(genotype, task, participant):
     """
     traits_text = []
     for trait, description in genotype['trait_formulations'].items():
-        modifier = get_modifier_bisect(participant[trait], genotype['intensity_modifiers'])
+        value = participant.get(trait, participant.get(str(trait).lower()))
+        if value is None:
+            # Если ключа нет в данных участника, пропускаем, чтобы не падать
+            continue
+        modifier = get_modifier_bisect(value, genotype['intensity_modifiers'])
         traits_text.append(f"- This trait ({trait}) describes you {modifier}: {description}")
     traits_text = "\n".join(traits_text)
 
     facets_text = []
     for facet, description in genotype['facet_formulations'].items():
-        modifier = get_modifier_bisect(participant[facet], genotype['intensity_modifiers'])
+        value = participant.get(facet, participant.get(str(facet).lower()))
+        if value is None:
+            continue
+        modifier = get_modifier_bisect(value, genotype['intensity_modifiers'])
         facets_text.append(f"- This facet ({facet}) describes you {modifier}: {description}")
     facets_text = "\n".join(facets_text)
     
