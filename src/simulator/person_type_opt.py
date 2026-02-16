@@ -22,6 +22,24 @@ from src.evolution.init_population import init_population
 from src.evolution.parse_args import parse_args_from_yaml
 
 
+def _get_project_root():
+    """Определяет корневую директорию проекта относительно расположения этого файла или текущей рабочей директории."""
+    # Сначала пробуем определить относительно расположения файла
+    file_path = Path(__file__).resolve()
+    # Файл находится в src/simulator/person_type_opt.py, поэтому корень на 3 уровня выше
+    candidate = file_path.parent.parent.parent
+    if (candidate / 'src').exists():
+        return candidate
+    # Если не получилось, ищем от текущей рабочей директории
+    cwd = Path.cwd()
+    current = cwd
+    while current != current.parent:
+        if (current / 'src').exists():
+            return current
+        current = current.parent
+    # Если ничего не нашли, возвращаем текущую директорию
+    return cwd
+
 def _load_traits(config):
     """Загружает traits из config['prompt']['traits_path'] или из встроенного src.prompt.traits."""
     prompt_cfg = config.get('prompt') or {}
@@ -29,7 +47,8 @@ def _load_traits(config):
     if path:
         p = Path(path)
         if not p.is_absolute():
-            p = Path.cwd() / p
+            project_root = _get_project_root()
+            p = project_root / p
         with open(p, 'r', encoding='utf-8') as f:
             data = json.load(f)
         return {int(k): v for k, v in data.items()}
@@ -44,7 +63,8 @@ def _load_facets(config):
     if path:
         p = Path(path)
         if not p.is_absolute():
-            p = Path.cwd() / p
+            project_root = _get_project_root()
+            p = project_root / p
         with open(p, 'r', encoding='utf-8') as f:
             data = json.load(f)
         return {int(k): v for k, v in data.items()}
@@ -59,7 +79,8 @@ def _load_system(config):
     if path:
         p = Path(path)
         if not p.is_absolute():
-            p = Path.cwd() / p
+            project_root = _get_project_root()
+            p = project_root / p
         with open(p, 'r', encoding='utf-8') as f:
             return json.load(f)
     from src.prompt.system import system
