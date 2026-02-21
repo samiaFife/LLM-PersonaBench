@@ -1,33 +1,10 @@
-# facets = {
-#     '0': {
-#         'facet_anger': '1',
-#         'facet_orderliness': '98',
-#         'facet_self_efficacy': '98',
-#         'facet_imagination': '4',
-#         'facet_cheerfulness': '94'
-#     },
-#     '1': {
-#         'facet_immoderation': '1',
-#         'facet_trust': '1',
-#         'facet_gregariousness': '2',
-#         'facet_self_efficacy': '97',
-#         'facet_orderliness': '96'
-#     },
-#     '2': {
-#         'facet_cheerfulness': '1',
-#         'facet_achievement_striving': '84',
-#         'facet_anger': '82',
-#         'facet_intellect': '18',
-#         'facet_morality': '81'
-#     },
-#     '3': {
-#         'facet_artistic_interests': '94',
-#         'facet_dutifulness': '7',
-#         'facet_excitement_seeking': '12',
-#         'facet_emotionality': '84',
-#         'facet_anger': '20'
-#     }
-# }
+# Целевые значения фасетов по кластерам (для каких значений строились формулировки).
+facet_target_values = {
+    0: {"facet_anger": 1, "facet_orderliness": 98, "facet_self_efficacy": 98, "facet_imagination": 4, "facet_cheerfulness": 94},
+    1: {"facet_immoderation": 1, "facet_trust": 1, "facet_gregariousness": 2, "facet_self_efficacy": 97, "facet_orderliness": 96},
+    2: {"facet_cheerfulness": 1, "facet_achievement_striving": 84, "facet_anger": 82, "facet_intellect": 18, "facet_morality": 81},
+    3: {"facet_artistic_interests": 94, "facet_dutifulness": 7, "facet_excitement_seeking": 12, "facet_emotionality": 84, "facet_anger": 20},
+}
 
 facets = {
     0: {

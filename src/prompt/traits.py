@@ -1,33 +1,11 @@
-# traits = {
-#     '0': {
-#         'openness': '22',
-#         'conscientiousness': '99',
-#         'extraversion': '79',
-#         'agreeableness': '90',
-#         'neuroticism': '3'
-#     },
-#     '1': {
-#         'openness': '74',
-#         'conscientiousness': '97',
-#         'extraversion': '45',
-#         'agreeableness': '40',
-#         'neuroticism': '6'
-#     },
-#     '2': {
-#         'openness': '40',
-#         'conscientiousness': '63',
-#         'extraversion': '52',
-#         'agreeableness': '57',
-#         'neuroticism': '62'
-#     },
-#     '3': {
-#         'openness': '88',
-#         'conscientiousness': '31',
-#         'extraversion': '30',
-#         'agreeableness': '42',
-#         'neuroticism': '54'
-#     }
-# }
+# Целевые значения черт по кластерам (для каких значений строились формулировки).
+# Используются для выбора модификатора интенсивности по совпадению с участником.
+trait_target_values = {
+    0: {"openness": 22, "conscientiousness": 99, "extraversion": 79, "agreeableness": 90, "neuroticism": 3},
+    1: {"openness": 74, "conscientiousness": 97, "extraversion": 45, "agreeableness": 40, "neuroticism": 6},
+    2: {"openness": 40, "conscientiousness": 63, "extraversion": 52, "agreeableness": 57, "neuroticism": 62},
+    3: {"openness": 88, "conscientiousness": 31, "extraversion": 30, "agreeableness": 42, "neuroticism": 54},
+}
 
 traits = {
     0: {

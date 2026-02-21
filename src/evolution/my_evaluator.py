@@ -55,7 +55,9 @@ class MyEvaluator(Evaluator):
         repaired_str = validate_and_repair_genotype(
             prompt_str, self.fixed_modifiers, self.template_genotype, config
         )
-        genotype = parse_str_to_genotype(repaired_str, self.fixed_modifiers, config)
+        genotype = parse_str_to_genotype(
+            repaired_str, self.fixed_modifiers, config, template_genotype=self.template_genotype
+        )
         scores = evaluate_participants_batch(
             self.dev_participants, genotype, self.task, self.model, self.participant_batch_size
         )

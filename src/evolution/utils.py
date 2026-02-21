@@ -88,10 +88,11 @@ def _normalize_facet_keys(d: dict) -> dict:
             normalized[key] = v
     return normalized
 
-def parse_str_to_genotype(geno_str, fixed_modifiers, config):
+def parse_str_to_genotype(geno_str, fixed_modifiers, config, template_genotype=None):
     """
-    Парсит строку обратно в genotype, добавляя fixed intensity_modifiers
-    Требует, чтобы EvoPrompt возвращал ВАЛИДНЫЙ JSON
+    Парсит строку обратно в genotype, добавляя fixed intensity_modifiers.
+    Если передан template_genotype, из него копируются trait_targets и facet_targets
+    (целевые значения для модификатора по совпадению; не эволюционируют).
     """
     # Очищаем ответ от возможного мусора
     cleaned_str = clean_evoprompt_response(geno_str)
@@ -127,6 +128,10 @@ def parse_str_to_genotype(geno_str, fixed_modifiers, config):
             else:
                 raise ValueError("Missing 'critic_formulations' in evolved genotype")
         
+        if template_genotype:
+            full_genotype['trait_targets'] = template_genotype.get('trait_targets', {})
+            full_genotype['facet_targets'] = template_genotype.get('facet_targets', {})
+        
         return full_genotype
         
     except json.JSONDecodeError as e:
@@ -151,12 +156,12 @@ def validate_and_repair_genotype(geno_str, fixed_modifiers, template_genotype, c
             if 'critic_formulations' in template_genotype:
                 config['evolution']['genotype_params']['critic_formulations'] = True
         
-        genotype = parse_str_to_genotype(geno_str, fixed_modifiers, config)
+        genotype = parse_str_to_genotype(geno_str, fixed_modifiers, config, template_genotype=template_genotype)
         
         # Проверяем обязательные поля
         repaired = {}
         
-        # Копируем существующие поля
+        # Копируем существующие поля (trait_targets/facet_targets не в JSON эволюции, берутся из template в parse)
         for key in ['role_definition', 'trait_formulations', 'facet_formulations', 'critic_formulations']:
             if key in genotype:
                 repaired[key] = genotype[key]

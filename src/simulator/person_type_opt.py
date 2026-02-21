@@ -87,6 +87,40 @@ def _load_system(config):
     return system
 
 
+def _load_trait_target_values(config):
+    """Целевые значения черт по кластерам (для модификатора по совпадению)."""
+    prompt_cfg = config.get('prompt') or {}
+    path = prompt_cfg.get('traits_path')
+    if path:
+        p = Path(path)
+        if not p.is_absolute():
+            p = _get_project_root() / p
+        if p.exists():
+            with open(p, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            raw = data.get('trait_target_values', {})
+            return {int(k): v for k, v in raw.items()}
+    from src.prompt.traits import trait_target_values
+    return trait_target_values
+
+
+def _load_facet_target_values(config):
+    """Целевые значения фасетов по кластерам (для модификатора по совпадению)."""
+    prompt_cfg = config.get('prompt') or {}
+    path = prompt_cfg.get('facets_path')
+    if path:
+        p = Path(path)
+        if not p.is_absolute():
+            p = _get_project_root() / p
+        if p.exists():
+            with open(p, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            raw = data.get('facet_target_values', {})
+            return {int(k): v for k, v in raw.items()}
+    from src.prompt.facets import facet_target_values
+    return facet_target_values
+
+
 def _evaluate_participants_on_test(
     test_participants, genotype, task, model, participant_batch_size, 
     results_dir, cluster, cluster_start_time, csv_filename="simulated_ocean_test.csv"
@@ -196,6 +230,8 @@ def run_experiment(config):
     traits = _load_traits(config)
     facets = _load_facets(config)
     system = _load_system(config)
+    trait_target_values = _load_trait_target_values(config)
+    facet_target_values = _load_facet_target_values(config)
 
     # Фиксированные модификаторы интенсивности (не оптимизируются пока)
     fixed_modifiers = system['intensity_modifiers']
@@ -253,13 +289,19 @@ def run_experiment(config):
         print(f"\n{'#'*70}")
         print(f"📊 ОБРАБОТКА КЛАСТЕРА: {cluster}")
         print(f"{'#'*70}\n")
+        cluster_trait_targets = trait_target_values.get(cluster, {})
+        cluster_facet_targets = facet_target_values.get(cluster, {})
+        trait_formulations = traits[cluster]
+        facet_formulations = facets[cluster]
         base_genotype = {
             'role_definition': system['role'],
-            'trait_formulations': traits[cluster],
-            'facet_formulations': facets[cluster],
+            'trait_formulations': trait_formulations,
+            'facet_formulations': facet_formulations,
             'intensity_modifiers': system['intensity_modifiers'],
             'critic_formulations': system['critic_internal'],
             'template_structure': system['template_structure'],
+            'trait_targets': {k: cluster_trait_targets[k] for k in trait_formulations if k in cluster_trait_targets},
+            'facet_targets': {k: cluster_facet_targets[k] for k in facet_formulations if k in cluster_facet_targets},
         }
         genotype = base_genotype.copy()
 
@@ -337,7 +379,7 @@ def run_experiment(config):
             best_str = clean_evoprompt_response(best_str_raw)
             # Чиним на случай битого JSON
             best_str = validate_and_repair_genotype(best_str, fixed_modifiers, base_genotype, config)
-            genotype = parse_str_to_genotype(best_str, fixed_modifiers, config)
+            genotype = parse_str_to_genotype(best_str, fixed_modifiers, config, template_genotype=base_genotype)
             print(f"✅ Эволюция завершена. Лучший генотип сохранён.")
             generations_log = {
                 "generations": evoluter.generation_logs if hasattr(evoluter, 'generation_logs') else [],
