@@ -1,0 +1,33 @@
+{
+  "name": "gigachat3_0_cluster_no_optimization_mean_value",
+  "description": "Запуск без эволюционной оптимизации для кластеров 0 и 1 с новыми mean_value_cluster промтами на модели GigaChat3-10B-A1.8B",
+  "prompt": {
+    "traits_path": "src/prompt/mean_value_cluster/traits.json",
+    "facets_path": "src/prompt/mean_value_cluster/facets.json",
+    "system_path": "src/prompt/system.json"
+  },
+  "data": {
+    "file_path": "data/raw/df_ipipneo_120_clusters",
+    "clusters": [
+      0
+    ],
+    "num_participants": 100,
+    "save_every_n": 2
+  },
+  "model": {
+    "model_name": "ai-sage/GigaChat3-10B-A1.8B",
+    "provider": "cloud",
+    "temperature": 0.7,
+    "timeout": 420,
+    "max_retries": 1
+  },
+  "simulation": {
+    "participant_batch_size": 2
+  },
+  "experiment": {
+    "seed": 2026,
+    "save_every_generation": false
+  },
+  "config_file": "configs\\experiments\\gigachat3_0_cluster_no_opt_mean_value.yaml",
+  "experiment_id": "gigachat3_0_cluster_no_opt_mean_value_20260313_132156"
+}
