@@ -1,0 +1,44 @@
+{
+  "experiment_id": "gigachat3_2_cluster_no_opt_mean_value_20260314_221342",
+  "status": "completed",
+  "config": {
+    "name": "gigachat3_2_cluster_no_optimization_mean_value",
+    "description": "Запуск без эволюционной оптимизации для кластера 1 с новыми mean_value_cluster промптами на модели GigaChat3-10B-A1.8B",
+    "prompt": {
+      "traits_path": "src/prompt/mean_value_cluster/traits.json",
+      "facets_path": "src/prompt/mean_value_cluster/facets.json",
+      "system_path": "src/prompt/system.json"
+    },
+    "data": {
+      "file_path": "data/raw/df_ipipneo_120_clusters",
+      "clusters": [
+        2
+      ],
+      "num_participants": 100,
+      "save_every_n": 2
+    },
+    "model": {
+      "model_name": "ai-sage/GigaChat3-10B-A1.8B",
+      "provider": "cloud",
+      "temperature": 0.7,
+      "timeout": 420,
+      "max_retries": 1
+    },
+    "simulation": {
+      "participant_batch_size": 5
+    },
+    "experiment": {
+      "seed": 2026,
+      "save_every_generation": false
+    },
+    "config_file": "configs\\experiments\\gigachat3_2_cluster_no_opt_mean_value.yaml",
+    "experiment_id": "gigachat3_2_cluster_no_opt_mean_value_20260314_221342",
+    "results_dir": "D:\\programming\\GitHub\\LLM-PersonaBench\\results_experiments\\gigachat3_2_cluster_no_opt_mean_value_20260314_221342"
+  },
+  "clusters": {
+    "2": {
+      "status": "completed",
+      "total_time": 1234.9236810207367
+    }
+  }
+}
