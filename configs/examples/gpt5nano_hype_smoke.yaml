@@ -1,0 +1,36 @@
+# Smoke test: HyPE optimization, gpt-5-nano via OpenRouter, cluster 2, 6 participants
+# Run: python tools/launch_experiment.py --config=examples/gpt5nano_hype_smoke.yaml
+
+name: "gpt5nano_hype_smoke"
+description: "Minimal HyPE smoke test on cluster 2 with gpt-5-nano"
+
+model:
+  model_name: "openai/gpt-5-nano"
+  provider: "openrouter"
+  temperature: 0.7
+  max_completion_tokens: 4000
+  max_retries: 5
+  rate_limit:
+    enabled: true
+    requests_per_second: 1.0
+    max_bucket_size: 10
+
+optimization:
+  method: "hype"
+
+evolution:
+  algorithm: null
+
+data:
+  file_path: "data/raw/df_ipipneo_120_clusters"
+  clusters: [2]
+  num_participants: 6   # train=3, test=3 — минимум для быстрого теста
+
+prompt:
+  traits_path: "src/prompt/traits.json"
+  facets_path: "src/prompt/facets.json"
+  system_path: "src/prompt/system.json"
+
+experiment:
+  seed: 2026
+  save_every_generation: false

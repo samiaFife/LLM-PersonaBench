@@ -1,0 +1,79 @@
+{
+  "timestamp": "20260319_173851",
+  "config": {
+    "num_participants": 20,
+    "cluster": 2,
+    "timeout": 120,
+    "max_retries": 2
+  },
+  "stats": {
+    "total_tests": 5,
+    "successful_tests": 0,
+    "failed_tests": 5,
+    "total_time": 24.926512956619263,
+    "start_time": 1773931131.9368055,
+    "end_time": 1773931156.8633184
+  },
+  "results": [
+    {
+      "variant_id": "v1_baseline",
+      "variant_name": "Baseline (из system.py)",
+      "baseline_score": null,
+      "test_score": null,
+      "improvement": null,
+      "critic_text": null,
+      "elapsed_seconds": 0.00989532470703125,
+      "timestamp": "2026-03-19T17:39:02.573532",
+      "status": "failed",
+      "error": "'genotype_params'"
+    },
+    {
+      "variant_id": "v2_detailed_checks",
+      "variant_name": "Detailed Consistency Checks",
+      "baseline_score": null,
+      "test_score": null,
+      "improvement": null,
+      "critic_text": null,
+      "elapsed_seconds": 3.0191709995269775,
+      "timestamp": "2026-03-19T17:39:05.593075",
+      "status": "failed",
+      "error": "'genotype_params'"
+    },
+    {
+      "variant_id": "v3_trait_facets_alignment",
+      "variant_name": "Trait-Facet Alignment Focus",
+      "baseline_score": null,
+      "test_score": null,
+      "improvement": null,
+      "critic_text": null,
+      "elapsed_seconds": 4.528913974761963,
+      "timestamp": "2026-03-19T17:39:10.122397",
+      "status": "failed",
+      "error": "'genotype_params'"
+    },
+    {
+      "variant_id": "v4_test_retest_emphasis",
+      "variant_name": "Test-Retest Reliability Focus",
+      "baseline_score": null,
+      "test_score": null,
+      "improvement": null,
+      "critic_text": null,
+      "elapsed_seconds": 2.7867164611816406,
+      "timestamp": "2026-03-19T17:39:12.909819",
+      "status": "failed",
+      "error": "'genotype_params'"
+    },
+    {
+      "variant_id": "v5_persona_embodiment",
+      "variant_name": "Deep Persona Embodiment",
+      "baseline_score": null,
+      "test_score": null,
+      "improvement": null,
+      "critic_text": null,
+      "elapsed_seconds": 3.952665090560913,
+      "timestamp": "2026-03-19T17:39:16.862984",
+      "status": "failed",
+      "error": "'genotype_params'"
+    }
+  ]
+}

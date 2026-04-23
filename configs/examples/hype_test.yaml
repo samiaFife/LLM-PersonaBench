@@ -1,0 +1,52 @@
+# Meta information
+name: "hype_test_cluster2"
+description: "Testing HyPE optimization for cluster 2"
+
+# Paths to prompts
+prompt:
+  traits_path: "src/prompt/traits.json"
+  facets_path: "src/prompt/facets.json"
+  system_path: "src/prompt/system.json"
+
+# Data settings
+data:
+  file_path: "data/raw/df_ipipneo_120_clusters"
+  clusters: [2]
+  num_participants: 20  # train: 12, test: 8
+  save_every_n: 2
+
+# OpenRouter model settings
+model:
+  model_name: "gpt-4o-mini"
+  provider: "openrouter"
+  temperature: 0.7
+  timeout: 120
+  max_retries: 3
+  max_completion_tokens: 4000
+  rate_limit:
+    enabled: true
+    requests_per_second: 1.0
+    max_bucket_size: 10
+
+# Optimization method: hype or evolution
+optimization:
+  method: "hype"  # Using HyPE instead of evolution
+  
+  # Settings for HyPE
+  hype:
+    sections:
+      role_definition: true
+      critic_formulations: true
+      output_format: true
+    trait_formulations: false  # Stubs for now
+    facet_formulations: false  # Stubs for now
+
+# Evolution settings (for backward compatibility, if method: evolution)
+evolution:
+  algorithm: null  # Disable GA
+  # or can completely remove the evolution section
+
+# Experiment settings
+experiment:
+  seed: 2026
+  save_every_generation: true

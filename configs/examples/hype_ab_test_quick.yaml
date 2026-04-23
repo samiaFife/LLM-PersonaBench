@@ -1,0 +1,40 @@
+# Meta information
+name: "hype_ab_test_quick"
+description: "Quick A/B test for functionality check (few participants, few variants)"
+
+# Paths to prompts
+prompt:
+  traits_path: "src/prompt/traits.json"
+  facets_path: "src/prompt/facets.json"
+  system_path: "src/prompt/system.json"
+
+# Data settings - MINIMAL for quick test
+data:
+  file_path: "data/raw/df_ipipneo_120_clusters"
+  clusters: [2]  # Only one cluster
+  num_participants: 12  # Total 12 participants: 7 train + 5 test
+  save_every_n: 1
+
+# Model settings OpenRouter
+model:
+  model_name: "gpt-4o-mini"
+  provider: "openrouter"
+  temperature: 0.7
+  timeout: 60  # Less timeout
+  max_retries: 2
+  max_completion_tokens: 2000  # Less tokens
+  rate_limit:
+    enabled: false  # Disable for quick test
+
+# Optimization method
+optimization:
+  method: "hype"
+
+# Evolution settings (disabled)
+evolution:
+  algorithm: null
+
+# Experiment settings
+experiment:
+  seed: 2026
+  save_every_generation: true

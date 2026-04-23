@@ -1,0 +1,79 @@
+{
+  "timestamp": "20260319_173108",
+  "config": {
+    "num_participants": 20,
+    "cluster": 2,
+    "timeout": 120,
+    "max_retries": 2
+  },
+  "stats": {
+    "total_tests": 5,
+    "successful_tests": 0,
+    "failed_tests": 5,
+    "total_time": 21.55309224128723,
+    "start_time": 1773930668.0567164,
+    "end_time": 1773930689.6098087
+  },
+  "results": [
+    {
+      "variant_id": "v1_baseline",
+      "variant_name": "Baseline (из system.py)",
+      "baseline_score": null,
+      "test_score": null,
+      "improvement": null,
+      "critic_text": null,
+      "elapsed_seconds": 0.003998517990112305,
+      "timestamp": "2026-03-19T17:31:16.203118",
+      "status": "failed",
+      "error": "'NoneType' object has no attribute 'lower'"
+    },
+    {
+      "variant_id": "v2_detailed_checks",
+      "variant_name": "Detailed Consistency Checks",
+      "baseline_score": null,
+      "test_score": null,
+      "improvement": null,
+      "critic_text": null,
+      "elapsed_seconds": 3.4368622303009033,
+      "timestamp": "2026-03-19T17:31:19.639980",
+      "status": "failed",
+      "error": "'NoneType' object has no attribute 'lower'"
+    },
+    {
+      "variant_id": "v3_trait_facets_alignment",
+      "variant_name": "Trait-Facet Alignment Focus",
+      "baseline_score": null,
+      "test_score": null,
+      "improvement": null,
+      "critic_text": null,
+      "elapsed_seconds": 3.501875400543213,
+      "timestamp": "2026-03-19T17:31:23.142856",
+      "status": "failed",
+      "error": "'NoneType' object has no attribute 'lower'"
+    },
+    {
+      "variant_id": "v4_test_retest_emphasis",
+      "variant_name": "Test-Retest Reliability Focus",
+      "baseline_score": null,
+      "test_score": null,
+      "improvement": null,
+      "critic_text": null,
+      "elapsed_seconds": 2.4903976917266846,
+      "timestamp": "2026-03-19T17:31:25.634254",
+      "status": "failed",
+      "error": "'NoneType' object has no attribute 'lower'"
+    },
+    {
+      "variant_id": "v5_persona_embodiment",
+      "variant_name": "Deep Persona Embodiment",
+      "baseline_score": null,
+      "test_score": null,
+      "improvement": null,
+      "critic_text": null,
+      "elapsed_seconds": 3.9745516777038574,
+      "timestamp": "2026-03-19T17:31:29.609808",
+      "status": "failed",
+      "error": "'NoneType' object has no attribute 'lower'"
+    }
+  ]
+}

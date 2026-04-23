@@ -1,0 +1,14 @@
+{
+  "timestamp": "20260319_175949",
+  "total_variants": 5,
+  "successful_tests": 5,
+  "failed_tests": 0,
+  "total_time_seconds": 1119.9569182395935,
+  "average_time_per_variant": 223.9913836479187,
+  "best_variant": "Deep Persona Embodiment",
+  "best_improvement": 0.012326388888888928,
+  "average_improvement": -2.777777777773771e-05,
+  "worst_improvement": -0.011631944444444375,
+  "variants_better_than_baseline": 2,
+  "variants_worse_than_baseline": 3
+}

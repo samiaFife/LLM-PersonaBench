@@ -1,0 +1,74 @@
+{
+  "timestamp": "20260319_175949",
+  "config": {
+    "num_participants": 20,
+    "cluster": 2,
+    "timeout": 120,
+    "max_retries": 2
+  },
+  "stats": {
+    "total_tests": 5,
+    "successful_tests": 5,
+    "failed_tests": 0,
+    "total_time": 1119.9569182395935,
+    "start_time": 1773932389.3194578,
+    "end_time": 1773933509.276376
+  },
+  "results": [
+    {
+      "variant_id": "v1_baseline",
+      "variant_name": "Baseline (из system.py)",
+      "baseline_score": 0.6334722222222222,
+      "test_score": 0.6324652777777778,
+      "improvement": -0.0010069444444443798,
+      "critic_text": "Reflect on these descriptions as if they are your own self-perception, and respond to questions by evaluating how accurately they describe you, as a real person would. \nInternally critique and adjust your responses for consistency with this personality profile.",
+      "elapsed_seconds": 205.6666076183319,
+      "timestamp": "2026-03-19T18:03:19.870806",
+      "status": "success"
+    },
+    {
+      "variant_id": "v2_detailed_checks",
+      "variant_name": "Detailed Consistency Checks",
+      "baseline_score": 0.6331597222222222,
+      "test_score": 0.634548611111111,
+      "improvement": 0.001388888888888884,
+      "critic_text": "Before answering any question, perform these checks: (1) Check if my response aligns with my dominant trait of self-awareness. (2) Verify if my answer is consistent with responses to similar questions. (3) Confirm that my intensity modifier reflects my typical emotional engagement. Only proceed if all checks are YES; otherwise, reassess and adjust for coherence.",
+      "elapsed_seconds": 219.79898142814636,
+      "timestamp": "2026-03-19T18:06:59.670809",
+      "status": "success"
+    },
+    {
+      "variant_id": "v3_trait_facets_alignment",
+      "variant_name": "Trait-Facet Alignment Focus",
+      "baseline_score": 0.6354166666666666,
+      "test_score": 0.6237847222222223,
+      "improvement": -0.011631944444444375,
+      "critic_text": "Reflect on your personality profile by evaluating each of the Big Five traits: Openness, Conscientiousness, Extraversion, Agreeableness, and Neuroticism. For each trait, consider the specific facets that contribute to your self-perception. If you encounter any conflicts between a trait and its corresponding facets, prioritize the facets as they provide a more nuanced understanding of your behavior. For instance, if you identify as highly Conscientious (trait) but find that your low score in Achievement Striving (facet) contradicts this, recognize that the facet's specificity should guide your self-assessment. Use intensity modifiers such as \"slightly,\" \"moderately,\" or \"very\" to articulate the degree of alignment or conflict. Critique your responses to ensure they reflect a coherent personality profile, adjusting where necessary to resolve contradictions between traits and facets.",
+      "elapsed_seconds": 278.30871415138245,
+      "timestamp": "2026-03-19T18:11:37.980528",
+      "status": "success"
+    },
+    {
+      "variant_id": "v4_test_retest_emphasis",
+      "variant_name": "Test-Retest Reliability Focus",
+      "baseline_score": 0.6295138888888889,
+      "test_score": 0.6282986111111112,
+      "improvement": -0.0012152777777777457,
+      "critic_text": "Reflect on the following descriptions in the context of your stable personality traits, considering how they align with your long-term self-perception. Respond to the questions by evaluating their accuracy based on your consistent patterns of behavior and attitudes. Focus on how these traits typically manifest in your daily life, avoiding any situational or contextual influences. Ensure that your responses would remain largely unchanged if you were to take this questionnaire again in a month, emphasizing your chronic self rather than momentary feelings or circumstances.",
+      "elapsed_seconds": 207.9980490207672,
+      "timestamp": "2026-03-19T18:15:05.978577",
+      "status": "success"
+    },
+    {
+      "variant_id": "v5_persona_embodiment",
+      "variant_name": "Deep Persona Embodiment",
+      "baseline_score": 0.6222222222222222,
+      "test_score": 0.6345486111111112,
+      "improvement": 0.012326388888888928,
+      "critic_text": "I am an individual who deeply understands my own personality and how it shapes my interactions with the world. I feel a strong connection to the traits described in my personality profile, as they resonate with my lived experiences. When I reflect on these descriptions, I draw from my memories and personal history, allowing me to evaluate their accuracy in representing who I am. I recall specific moments in my life that illustrate these traits, feeling the emotions and thoughts I experienced during those times. I engage in a genuine internal critique, considering how each trait aligns with my daily actions and decisions. I am committed to presenting a coherent and authentic self-report, continuously adjusting my understanding to ensure it reflects my true essence. Each response I give is an honest reflection of my identity, shaped by the richness of my experiences.",
+      "elapsed_seconds": 203.29579782485962,
+      "timestamp": "2026-03-19T18:18:29.275376",
+      "status": "success"
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "timestamp": "20260319_173521",
+  "config": {
+    "num_participants": 20,
+    "cluster": 2,
+    "timeout": 120,
+    "max_retries": 2
+  },
+  "stats": {
+    "total_tests": 5,
+    "successful_tests": 0,
+    "failed_tests": 5,
+    "total_time": 19.402515172958374,
+    "start_time": 1773930921.1579866,
+    "end_time": 1773930940.5605018
+  },
+  "results": [
+    {
+      "variant_id": "v1_baseline",
+      "variant_name": "Baseline (из system.py)",
+      "baseline_score": null,
+      "test_score": null,
+      "improvement": null,
+      "critic_text": null,
+      "elapsed_seconds": 0.0029990673065185547,
+      "timestamp": "2026-03-19T17:35:27.634478",
+      "status": "failed",
+      "error": "'genotype_params'"
+    },
+    {
+      "variant_id": "v2_detailed_checks",
+      "variant_name": "Detailed Consistency Checks",
+      "baseline_score": null,
+      "test_score": null,
+      "improvement": null,
+      "critic_text": null,
+      "elapsed_seconds": 3.398935317993164,
+      "timestamp": "2026-03-19T17:35:31.033413",
+      "status": "failed",
+      "error": "'genotype_params'"
+    },
+    {
+      "variant_id": "v3_trait_facets_alignment",
+      "variant_name": "Trait-Facet Alignment Focus",
+      "baseline_score": null,
+      "test_score": null,
+      "improvement": null,
+      "critic_text": null,
+      "elapsed_seconds": 3.198699712753296,
+      "timestamp": "2026-03-19T17:35:34.233112",
+      "status": "failed",
+      "error": "'genotype_params'"
+    },
+    {
+      "variant_id": "v4_test_retest_emphasis",
+      "variant_name": "Test-Retest Reliability Focus",
+      "baseline_score": null,
+      "test_score": null,
+      "improvement": null,
+      "critic_text": null,
+      "elapsed_seconds": 2.5418472290039062,
+      "timestamp": "2026-03-19T17:35:36.775958",
+      "status": "failed",
+      "error": "'genotype_params'"
+    },
+    {
+      "variant_id": "v5_persona_embodiment",
+      "variant_name": "Deep Persona Embodiment",
+      "baseline_score": null,
+      "test_score": null,
+      "improvement": null,
+      "critic_text": null,
+      "elapsed_seconds": 3.7825424671173096,
+      "timestamp": "2026-03-19T17:35:40.559499",
+      "status": "failed",
+      "error": "'genotype_params'"
+    }
+  ]
+}

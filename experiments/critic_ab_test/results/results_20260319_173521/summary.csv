@@ -1,0 +1,6 @@
+variant_id,variant_name,baseline_score,test_score,improvement,critic_text,elapsed_seconds,timestamp,status,error
+v1_baseline,Baseline (из system.py),,,,,0.0029990673065185547,2026-03-19T17:35:27.634478,failed,'genotype_params'
+v2_detailed_checks,Detailed Consistency Checks,,,,,3.398935317993164,2026-03-19T17:35:31.033413,failed,'genotype_params'
+v3_trait_facets_alignment,Trait-Facet Alignment Focus,,,,,3.198699712753296,2026-03-19T17:35:34.233112,failed,'genotype_params'
+v4_test_retest_emphasis,Test-Retest Reliability Focus,,,,,2.5418472290039062,2026-03-19T17:35:36.775958,failed,'genotype_params'
+v5_persona_embodiment,Deep Persona Embodiment,,,,,3.7825424671173096,2026-03-19T17:35:40.559499,failed,'genotype_params'

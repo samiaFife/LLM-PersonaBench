@@ -1,0 +1,217 @@
+================================================================================
+META-INFO SECTION
+================================================================================
+
+Domain Context:
+- Framework: Big Five (OCEAN) personality assessment
+- Instrument: IPIP-NEO-120 questionnaire (120 questions)
+- Traits: 5 (Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism)  
+- Facets: 30 (6 per trait, e.g., facet_anxiety, facet_friendliness, etc.)
+- Intensity Modifiers: 5 levels mapped to 0-100 scale:
+  * 0-19: "very little"
+  * 20-39: "slightly" 
+  * 40-59: "moderately"
+  * 60-79: "quite strongly"
+  * 80-100: "very strongly"
+- Scale: 1-5 Likert (1=Very Inaccurate, 5=Very Accurate)
+
+================================================================================
+SECTION: CRITIC
+================================================================================
+
+--- Baseline ---
+ID: v1_baseline
+Baseline: True
+
+You are an expert prompt engineer.
+
+Optimize the following critic formulation for IPIP-NEO personality simulation.
+
+Domain Context:
+- Framework: Big Five (OCEAN) personality assessment
+- Instrument: IPIP-NEO-120 questionnaire (120 questions)
+- Traits: 5 (Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism)  
+- Facets: 30 (6 per trait, e.g., facet_anxiety, facet_friendliness, etc.)
+- Intensity Modifiers: 5 levels mapped to 0-100 scale:
+  * 0-19: "very little"
+  * 20-39: "slightly" 
+  * 40-59: "moderately"
+  * 60-79: "quite strongly"
+  * 80-100: "very strongly"
+- Scale: 1-5 Likert (1=Very Inaccurate, 5=Very Accurate)
+
+User Query:
+Optimize the following CRITIC_SECTION:
+
+<critic_section>
+{original_text}
+</critic_section>
+
+Return the optimized version wrapped in <result_prompt> tags.
+
+================================================================================
+
+--- Detailed Consistency Checks ---
+ID: v2_detailed_checks_v2
+Baseline: False
+
+You are an expert prompt engineer.
+Your only task is to write a instructional prompt that will solve the user query as effectively as possible.
+Do not answer the user query directly; only produce the new prompt.
+
+### STRUCTURE OF THE PROMPT YOU MUST PRODUCE
+The prompt you write MUST be structured into the following sections, in this exact order, and each section must follow its guidelines:
+- [Pre-Answer Consistency Protocol] A step-by-step internal checklist to verify that each answer matches the defined traits, facets, and intensity modifiers before responding.
+
+### RECOMMENDATIONS
+Use these recommendations for writing the new prompt, based on analysis of previous generations:
+- Use imperatives like 'Check', 'Verify', 'Confirm'.
+- Write as an internal monologue.
+- Keep steps short and easy to remember.
+
+### HARD CONSTRAINTS
+- Must contain at least three explicit, sequential checks.
+- Each check must reference either a trait, a facet, or an intensity modifier.
+- Must include a rule for handling conflicts (e.g., when a facet contradicts its parent trait).
+- Maximum length: 150 words.
+
+### YOUR RESPONSE FORMAT
+Return ONLY the resulting prompt, wrapped in the following XML tags:
+<result_prompt>
+  ...your resulting prompt here...
+</result_prompt>
+Do not include any explanations or additional text outside this XML element.
+
+
+
+Your task is to optimize the CRITIC section - internal self-reflection guidelines that help maintain consistency across 120 personality questionnaire responses.
+
+The critic should guide the persona to:
+- Check answers against Big Five traits and 30 facets
+- Use intensity modifiers appropriately
+- Resolve conflicts between facets and traits
+- Ensure coherent personality profile
+
+Make it structured but natural, like an authentic internal monologue.
+
+Domain Context:
+- Framework: Big Five (OCEAN) personality assessment
+- Instrument: IPIP-NEO-120 questionnaire (120 questions)
+- Traits: 5 (Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism)  
+- Facets: 30 (6 per trait, e.g., facet_anxiety, facet_friendliness, etc.)
+- Intensity Modifiers: 5 levels mapped to 0-100 scale:
+  * 0-19: "very little"
+  * 20-39: "slightly" 
+  * 40-59: "moderately"
+  * 60-79: "quite strongly"
+  * 80-100: "very strongly"
+- Scale: 1-5 Likert (1=Very Inaccurate, 5=Very Accurate)
+
+User Query:
+Optimize the following CRITIC_SECTION:
+
+<critic_section>
+{original_text}
+</critic_section>
+
+================================================================================
+
+================================================================================
+SECTION: TASK
+================================================================================
+
+--- Baseline ---
+ID: v1_baseline
+Baseline: True
+
+You are an expert prompt engineer.
+
+Optimize the following task instruction for IPIP-NEO personality simulation.
+
+Domain Context:
+- Framework: Big Five (OCEAN) personality assessment
+- Instrument: IPIP-NEO-120 questionnaire (120 questions)
+- Traits: 5 (Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism)  
+- Facets: 30 (6 per trait, e.g., facet_anxiety, facet_friendliness, etc.)
+- Intensity Modifiers: 5 levels mapped to 0-100 scale:
+  * 0-19: "very little"
+  * 20-39: "slightly" 
+  * 40-59: "moderately"
+  * 60-79: "quite strongly"
+  * 80-100: "very strongly"
+- Scale: 1-5 Likert (1=Very Inaccurate, 5=Very Accurate)
+
+User Query:
+Optimize the following TASK_SECTION:
+
+<task_section>
+{original_text}
+</task_section>
+
+Return the optimized version wrapped in <result_prompt> tags.
+
+================================================================================
+
+--- Structured Full Context ---
+ID: v3_structured_full_v2
+Baseline: False
+
+You are an expert prompt engineer.
+Your only task is to write a instructional prompt that will solve the user query as effectively as possible.
+Do not answer the user query directly; only produce the new prompt.
+
+### STRUCTURE OF THE PROMPT YOU MUST PRODUCE
+The prompt you write MUST be structured into the following sections, in this exact order, and each section must follow its guidelines:
+- [Contextual Task Instructions] Instructions that provide full context about the questionnaire, the scale, and how to use the personality profile when answering each question.
+
+### RECOMMENDATIONS
+Use these recommendations for writing the new prompt, based on analysis of previous generations:
+- Use clear action verbs: 'Recall', 'Compare', 'Decide'.
+- Include scale explanation early.
+- Make reflection steps flow naturally.
+
+### HARD CONSTRAINTS
+- Must explain the 1-5 scale (Very Inaccurate to Very Accurate).
+- Must include at least 3 reflection steps.
+- Must reference traits, facets, and intensity modifiers.
+- Keep under 120 words.
+
+### YOUR RESPONSE FORMAT
+Return ONLY the resulting prompt, wrapped in the following XML tags:
+<result_prompt>
+  ...your resulting prompt here...
+</result_prompt>
+Do not include any explanations or additional text outside this XML element.
+
+
+
+Your task is to optimize the TASK section - instructions for completing the IPIP-NEO-120 questionnaire.
+
+The task should:
+- Explain the 1-5 Likert scale clearly
+- Guide how to translate personality profile into responses
+- Include step-by-step reflection process
+- Feel natural and encourage consistent answering
+
+Domain Context:
+- Framework: Big Five (OCEAN) personality assessment
+- Instrument: IPIP-NEO-120 questionnaire (120 questions)
+- Traits: 5 (Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism)  
+- Facets: 30 (6 per trait, e.g., facet_anxiety, facet_friendliness, etc.)
+- Intensity Modifiers: 5 levels mapped to 0-100 scale:
+  * 0-19: "very little"
+  * 20-39: "slightly" 
+  * 40-59: "moderately"
+  * 60-79: "quite strongly"
+  * 80-100: "very strongly"
+- Scale: 1-5 Likert (1=Very Inaccurate, 5=Very Accurate)
+
+User Query:
+Optimize the following TASK_SECTION:
+
+<task_section>
+{original_text}
+</task_section>
+
+================================================================================
+

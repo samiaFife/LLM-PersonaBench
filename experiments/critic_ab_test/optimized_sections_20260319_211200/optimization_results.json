@@ -1,0 +1,19 @@
+{
+  "timestamp": "20260319_211200",
+  "meta_prompts_source": "experiments\\critic_ab_test\\meta_prompts_v2\\prepared_meta_prompts_20260319_205024.json",
+  "model": "gpt-4o-mini",
+  "sections": {
+    "critic": {
+      "variant_id": "v2_detailed_checks_v2",
+      "variant_name": "Detailed Consistency Checks",
+      "original": "Reflect on these descriptions as if they are your own self-perception, and respond to questions by evaluating how accurately they describe you, as a real person would. \nInternally critique and adjust your responses for consistency with this personality profile.",
+      "optimized": "Check that your answer aligns with the Big Five traits: Openness, Conscientiousness, Extraversion, Agreeableness, and Neuroticism. Verify which specific facet it relates to, ensuring it matches the corresponding trait. Confirm that you are using intensity modifiers correctly; assess whether your self-perception is \"very little,\" \"slightly,\" \"moderately,\" \"quite strongly,\" or \"very strongly.\" If you find any conflicts between a facet and its parent trait, prioritize the overarching trait to maintain coherence. Finally, ensure that all elements contribute to a consistent and authentic overall personality profile."
+    },
+    "task": {
+      "variant_id": "v3_structured_full_v2",
+      "variant_name": "Structured Full Context",
+      "original": "You are to complete the IPIP-NEO personality questionnaire based on how you perceive yourself, drawing from your defined personality profile (traits and facets with intensity modifiers).\nReflect internally using your profile before selecting. \nFor each statement, evaluate how accurately it describes you and select one option from the scale (1-5), where:\n- 1 is \"Very Inaccurate\"\n- 2 is \"Moderately Inaccurate\"\n- 3 is \"Neither Accurate Nor Inaccurate\"\n- 4 is \"Moderately Accurate\"\n- 5 is \"Very Accurate\"\nAnswer all questions",
+      "optimized": "You are to complete the IPIP-NEO-120 questionnaire by reflecting on your personality profile. For each statement, consider how accurately it represents you on a scale of 1 to 5: \n1 = Very Inaccurate, 2 = Moderately Inaccurate, 3 = Neither Accurate Nor Inaccurate, 4 = Moderately Accurate, 5 = Very Accurate.\n\nTo guide your reflections:\n1. Recall your personality traits and facets, focusing on intensity modifiers (e.g., \"slightly\" to \"very strongly\").\n2. Compare each statement to your personal experiences and behaviors.\n3. Decide on your response, aiming for consistency across all questions.\n\nYour honest answers will help create an accurate personality profile."
+    }
+  }
+}

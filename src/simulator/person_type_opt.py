@@ -4,16 +4,10 @@ from pathlib import Path
 
 import pandas as pd
 
-from src.evolution.evoluter import GAEvoluter
-from src.evolution.init_population import init_population
 from src.evolution.my_evaluator import MyEvaluator
 from src.evolution.parse_args import parse_args_from_yaml
-from src.evolution.utils import (
-    clean_evoprompt_response,
-    parse_str_to_genotype,
-    validate_and_repair_genotype,
-)
 from src.models.registry import get_model
+from src.optimizers import OptimizerRegistry
 from src.utils.personality_match import (
     aggregate_stage_metrics,
     evaluate_participants_batch,
@@ -172,23 +166,87 @@ def _evaluate_participants_on_test(
     return {
         "participant_scores": participant_scores,
         "stage_metrics": stage_metrics,
-        "answers_csv": str(Path(f"cluster_{cluster}") / csv_filename).replace("\\", "/"),
+        "answers_csv": str(Path(f"cluster_{cluster}") / csv_filename).replace(
+            "\\", "/"
+        ),
     }
 
 
-def _build_stage_payload(stage_metrics: dict, prompt, answers_csv: str | None = None) -> dict:
+def _build_stage_payload(
+    stage_metrics: dict, prompt, answers_csv: str | None = None
+) -> dict:
     payload = {
         "summary": stage_metrics.get("summary", {}),
         "trait_similarity": stage_metrics.get("trait_similarity", {}),
         "facet_similarity": stage_metrics.get("facet_similarity", {}),
         "answer_block_similarity": stage_metrics.get("answer_block_similarity", {}),
         "selected_facets": stage_metrics.get("selected_facets", []),
-        "trait_question_blocks": stage_metrics.get("trait_question_blocks", get_trait_question_blocks()),
+        "trait_question_blocks": stage_metrics.get(
+            "trait_question_blocks", get_trait_question_blocks()
+        ),
         "prompt": prompt,
     }
     if answers_csv is not None:
         payload["answers_csv"] = answers_csv
     return payload
+
+
+def _collect_generation_log(optimizer, genotype: dict, selected_facets: list) -> dict:
+    """
+    Build optimization_generations_stage dict from the optimizer's internal log.
+
+    Supports:
+      - SectionalHyPEOptimizer  → get_optimization_log() → two pseudo-generations
+      - EvolutionOptimizer      → get_generation_logs()  → one entry per GA generation
+      - Any other BaseOptimizer → empty generations list
+    """
+    from src.meta_optimizer.sectional_hype import SectionalHyPEOptimizer
+    from src.optimizers.evolution import EvolutionOptimizer
+    from src.utils.personality_match import get_trait_question_blocks
+
+    generations = []
+
+    if isinstance(optimizer, SectionalHyPEOptimizer):
+        opt_log = optimizer.get_optimization_log()
+        baseline_entry = next((x for x in opt_log if x["stage"] == "BASELINE"), None)
+        final_entry = next((x for x in opt_log if x["stage"] == "FINAL"), None)
+        generations.append({
+            "generation": 0,
+            "best_score": baseline_entry["score"] if baseline_entry else 0.0,
+            "mean_score": baseline_entry["score"] if baseline_entry else 0.0,
+            "best_prompt": genotype,
+            "summary": {"mean_similarity": baseline_entry["score"] if baseline_entry else 0.0},
+            "method": "hype_baseline",
+        })
+        generations.append({
+            "generation": 1,
+            "best_score": final_entry["score"] if final_entry else 0.0,
+            "mean_score": final_entry["score"] if final_entry else 0.0,
+            "best_prompt": genotype,
+            "summary": {"mean_similarity": final_entry["score"] if final_entry else 0.0},
+            "method": "hype_final",
+        })
+
+    elif isinstance(optimizer, EvolutionOptimizer):
+        for gen_data in optimizer.get_generation_logs():
+            stage = gen_data.get("best_stage_summary") or {}
+            generations.append({
+                "generation": gen_data.get("generation"),
+                "best_score": gen_data.get("best_score", 0.0),
+                "mean_score": gen_data.get("mean_score", 0.0),
+                "best_prompt": gen_data.get("best_prompt"),
+                "summary": stage.get("summary", {}),
+                "trait_similarity": stage.get("trait_similarity", {}),
+                "facet_similarity": stage.get("facet_similarity", {}),
+                "answer_block_similarity": stage.get("answer_block_similarity", {}),
+                "selected_facets": stage.get("selected_facets", selected_facets),
+                "trait_question_blocks": stage.get(
+                    "trait_question_blocks", get_trait_question_blocks()
+                ),
+                "method": "evolution",
+            })
+
+    return {"generations": generations}
 
 
 # ГЛАВНЫЙ ЦИКЛ ЭКСПЕРИМЕНТА
@@ -229,7 +287,9 @@ def run_experiment(config):
 
     print("📦 Загрузка модели...")
     model = get_model(config["model"])
-    print(f"✅ Модель для симуляции загружена: {config['model'].get('model_name', 'неизвестно')}\n")
+    print(
+        f"✅ Модель для симуляции загружена: {config['model'].get('model_name', 'неизвестно')}\n"
+    )
 
     evolution_model = None
     if "evolution" in config and config["evolution"].get("llm_for_evolution"):
@@ -241,10 +301,13 @@ def run_experiment(config):
             "timeout": config["evolution"].get("timeout")
             or config["model"].get("timeout")
             or config["model"].get("request_timeout"),
-            "max_retries": config["evolution"].get("max_retries") or config["model"].get("max_retries"),
+            "max_retries": config["evolution"].get("max_retries")
+            or config["model"].get("max_retries"),
         }
         evolution_model = get_model(evolution_model_config)
-        print(f"✅ Модель для эволюции загружена: {evolution_model_config['model_name']}\n")
+        print(
+            f"✅ Модель для эволюции загружена: {evolution_model_config['model_name']}\n"
+        )
 
     print("📂 Загрузка данных участников...")
     data_participants = pd.read_csv(config["data"]["file_path"])
@@ -286,20 +349,32 @@ def run_experiment(config):
             "intensity_modifiers": system["intensity_modifiers"],
             "critic_formulations": system["critic_internal"],
             "template_structure": system["template_structure"],
-            "trait_targets": {k: cluster_trait_targets[k] for k in trait_formulations if k in cluster_trait_targets},
-            "facet_targets": {k: cluster_facet_targets[k] for k in facet_formulations if k in cluster_facet_targets},
+            "trait_targets": {
+                k: cluster_trait_targets[k]
+                for k in trait_formulations
+                if k in cluster_trait_targets
+            },
+            "facet_targets": {
+                k: cluster_facet_targets[k]
+                for k in facet_formulations
+                if k in cluster_facet_targets
+            },
         }
         genotype = base_genotype.copy()
         selected_facets = list(facet_formulations.keys())
 
         n_participants = config["data"]["num_participants"]
-        total_participants = data_participants[data_participants["clusters"] == cluster].iloc[:n_participants]
+        total_participants = data_participants[
+            data_participants["clusters"] == cluster
+        ].iloc[:n_participants]
 
         train_size = int(n_participants * 0.6)
         test_size = n_participants - train_size
         train_participants = total_participants.iloc[:train_size]
         test_participants = total_participants.iloc[train_size:]
-        print(f"👥 Отобрано участников для кластера {cluster}: {len(total_participants)}")
+        print(
+            f"👥 Отобрано участников для кластера {cluster}: {len(total_participants)}"
+        )
         print(f"👥 Train: {train_size},  Test: {test_size}")
 
         participant_batch_size = int(
@@ -308,7 +383,9 @@ def run_experiment(config):
             or 1
         )
 
-        print(f"\n📊 ПРОГОН БЕЗ ОПТИМИЗАЦИИ на Test (batch_size={participant_batch_size})")
+        print(
+            f"\n📊 ПРОГОН БЕЗ ОПТИМИЗАЦИИ на Test (batch_size={participant_batch_size})"
+        )
         non_opt_results = _evaluate_participants_on_test(
             test_participants,
             base_genotype,
@@ -326,17 +403,33 @@ def run_experiment(config):
             answers_csv=non_opt_results["answers_csv"],
         )
         print("✅ Прогон без оптимизации завершён")
-        print(f"  - Средняя схожесть: {before_stage['summary'].get('mean_similarity', 0):.4f}")
-        print(f"  - Средняя разница: {before_stage['summary'].get('mean_avg_diff', 0):.4f}")
-        print(f"  - Средняя корреляция Пирсона: {before_stage['summary'].get('mean_pearson_corr', 0):.4f}\n")
+        print(
+            f"  - Средняя схожесть: {before_stage['summary'].get('mean_similarity', 0):.4f}"
+        )
+        print(
+            f"  - Средняя разница: {before_stage['summary'].get('mean_avg_diff', 0):.4f}"
+        )
+        print(
+            f"  - Средняя корреляция Пирсона: {before_stage['summary'].get('mean_pearson_corr', 0):.4f}\n"
+        )
 
-        optimization_enabled = "evolution" in config and config["evolution"].get("algorithm")
+        # Determine optimization method.
+        # Empty string / missing → skip optimization entirely (no after-test).
+        # "none" → NoOpOptimizer: runs the pipeline but returns base_genotype unchanged;
+        #          after-test IS performed so you get a fair before/after comparison.
+        # "hype" / "evolution" / any registered name → full optimization.
+        optimization_method = config.get("optimization", {}).get("method", "").strip()
+        optimization_enabled = bool(optimization_method)
+
         optimization_generations_stage = {"generations": []}
-        if optimization_enabled:
-            cluster_progress = experiment_time_estimator.get_progress_info(completed_items=cluster_idx)
-            print(f"🧬 Запуск эволюционной оптимизации для кластера {cluster} | {cluster_progress}")
 
-            evo_args = parse_args_from_yaml(config["evolution"])
+        if optimization_enabled:
+            cluster_progress = experiment_time_estimator.get_progress_info(
+                completed_items=cluster_idx
+            )
+
+            # Setup evaluator (shared by all optimizer methods)
+            evo_args = parse_args_from_yaml(config.get("evolution", {}))
             evaluator = MyEvaluator(
                 evo_args,
                 task,
@@ -350,39 +443,35 @@ def run_experiment(config):
                 f"MyEvaluator: установлено {len(train_participants)} участников для оценки (dev_participants)"
             )
 
-            model_for_evolution = evolution_model if evolution_model is not None else model
-            evoluter = GAEvoluter(evo_args, evaluator, evolution_model=model_for_evolution, config=config)
-            evoluter.population = init_population(base_genotype, config, evo_args.popsize, model_for_evolution)
-            evoluter.evolute()
+            model_for_optimization = (
+                evolution_model if evolution_model is not None else model
+            )
 
-            best_str_raw = evoluter.population[0]
-            best_str = clean_evoprompt_response(best_str_raw)
-            best_str = validate_and_repair_genotype(best_str, fixed_modifiers, base_genotype, config)
-            genotype = parse_str_to_genotype(best_str, fixed_modifiers, config, template_genotype=base_genotype)
-            print("✅ Эволюция завершена. Лучший генотип сохранён.")
+            print(
+                f"🚀 Запуск оптимизации [{optimization_method}] для кластера {cluster} | {cluster_progress}"
+            )
 
-            for gen_data in getattr(evoluter, "generation_logs", []):
-                stage = gen_data.get("best_stage_summary") or {}
-                optimization_generations_stage["generations"].append(
-                    {
-                        "generation": gen_data.get("generation"),
-                        "best_score": gen_data.get("best_score", 0.0),
-                        "mean_score": gen_data.get("mean_score", 0.0),
-                        "best_prompt": gen_data.get("best_prompt"),
-                        "summary": stage.get("summary", {}),
-                        "trait_similarity": stage.get("trait_similarity", {}),
-                        "facet_similarity": stage.get("facet_similarity", {}),
-                        "answer_block_similarity": stage.get("answer_block_similarity", {}),
-                        "selected_facets": stage.get("selected_facets", selected_facets),
-                        "trait_question_blocks": stage.get("trait_question_blocks", get_trait_question_blocks()),
-                    }
-                )
+            optimizer = OptimizerRegistry.create(
+                optimization_method,
+                model=model_for_optimization,
+                config=config,
+            )
+            genotype = optimizer.optimize(base_genotype, evaluator, train_participants)
+
+            print(f"✅ Оптимизация [{optimization_method}] завершена.")
+
+            # Collect generation log — format depends on optimizer type
+            optimization_generations_stage = _collect_generation_log(
+                optimizer, genotype, selected_facets
+            )
         else:
-            print("⚠️  Эволюционная оптимизация не включена в конфиге. Используется базовый генотип.")
+            print("⚠️  Оптимизация не включена в конфиге. Используется базовый генотип.")
 
         after_stage = None
         if optimization_enabled:
-            print(f"📊 ОЦЕНКА ОПТИМИЗИРОВАННОГО ГЕНОТИПА на Test (batch_size={participant_batch_size})")
+            print(
+                f"📊 ОЦЕНКА ОПТИМИЗИРОВАННОГО ГЕНОТИПА на Test (batch_size={participant_batch_size})"
+            )
             opt_results = _evaluate_participants_on_test(
                 test_participants,
                 genotype,
@@ -400,26 +489,46 @@ def run_experiment(config):
                 answers_csv=opt_results["answers_csv"],
             )
         else:
-            print("⏭️  Повторный этап after_optimization_test пропущен (режим без оптимизации).")
+            print(
+                "⏭️  Повторный этап after_optimization_test пропущен (режим без оптимизации)."
+            )
 
         final_stage = after_stage if after_stage is not None else before_stage
 
         cluster_total_time = time.time() - cluster_start_time
         experiment_time_estimator.finish_item()
-        experiment_progress = experiment_time_estimator.get_progress_info(completed_items=cluster_idx + 1)
+        experiment_progress = experiment_time_estimator.get_progress_info(
+            completed_items=cluster_idx + 1
+        )
 
         print(f"\n{'=' * 70}")
         print(f"📈 ИТОГОВЫЕ СРЕДНИЕ ПОКАЗАТЕЛИ КЛАСТЕРА {cluster}")
         print(f"{'=' * 70}")
-        print(f"- Средняя схожесть (similarity): {final_stage['summary'].get('mean_similarity', 0):.4f}")
-        print(f"- Средняя разница (avg_diff): {final_stage['summary'].get('mean_avg_diff', 0):.4f}")
-        print(f"- Средняя корреляция Пирсона (pearson_corr): {final_stage['summary'].get('mean_pearson_corr', 0):.4f}")
+        print(
+            f"- Средняя схожесть (similarity): {final_stage['summary'].get('mean_similarity', 0):.4f}"
+        )
+        print(
+            f"- Средняя разница (avg_diff): {final_stage['summary'].get('mean_avg_diff', 0):.4f}"
+        )
+        print(
+            f"- Средняя корреляция Пирсона (pearson_corr): {final_stage['summary'].get('mean_pearson_corr', 0):.4f}"
+        )
         print("  Five-factor (OCEAN+30):")
-        print(f"  - MAE (mean |real−sim|): {final_stage['summary'].get('mean_mae_35', 0):.4f}")
-        print(f"  - Similarity по 35: {final_stage['summary'].get('mean_similarity_35', 0):.4f}")
-        print(f"  - Similarity по 30 фасетам: {final_stage['summary'].get('mean_similarity_facets', 0):.4f}")
-        print(f"  - Similarity по 5 чертам: {final_stage['summary'].get('mean_similarity_traits', 0):.4f}")
-        print(f"  - Pearson по 35: {final_stage['summary'].get('mean_pearson_35', 0):.4f}")
+        print(
+            f"  - MAE (mean |real−sim|): {final_stage['summary'].get('mean_mae_35', 0):.4f}"
+        )
+        print(
+            f"  - Similarity по 35: {final_stage['summary'].get('mean_similarity_35', 0):.4f}"
+        )
+        print(
+            f"  - Similarity по 30 фасетам: {final_stage['summary'].get('mean_similarity_facets', 0):.4f}"
+        )
+        print(
+            f"  - Similarity по 5 чертам: {final_stage['summary'].get('mean_similarity_traits', 0):.4f}"
+        )
+        print(
+            f"  - Pearson по 35: {final_stage['summary'].get('mean_pearson_35', 0):.4f}"
+        )
         print(f"{'=' * 70}")
         print("⏱️  Статистика времени кластера:")
         print(f"- Общее время: {format_time(cluster_total_time)}")

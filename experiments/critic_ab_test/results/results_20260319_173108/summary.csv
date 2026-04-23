@@ -1,0 +1,6 @@
+variant_id,variant_name,baseline_score,test_score,improvement,critic_text,elapsed_seconds,timestamp,status,error
+v1_baseline,Baseline (из system.py),,,,,0.003998517990112305,2026-03-19T17:31:16.203118,failed,'NoneType' object has no attribute 'lower'
+v2_detailed_checks,Detailed Consistency Checks,,,,,3.4368622303009033,2026-03-19T17:31:19.639980,failed,'NoneType' object has no attribute 'lower'
+v3_trait_facets_alignment,Trait-Facet Alignment Focus,,,,,3.501875400543213,2026-03-19T17:31:23.142856,failed,'NoneType' object has no attribute 'lower'
+v4_test_retest_emphasis,Test-Retest Reliability Focus,,,,,2.4903976917266846,2026-03-19T17:31:25.634254,failed,'NoneType' object has no attribute 'lower'
+v5_persona_embodiment,Deep Persona Embodiment,,,,,3.9745516777038574,2026-03-19T17:31:29.609808,failed,'NoneType' object has no attribute 'lower'

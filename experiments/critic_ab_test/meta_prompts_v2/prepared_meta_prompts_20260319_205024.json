@@ -1,0 +1,60 @@
+{
+  "timestamp": "20260319_205024",
+  "meta_info": "Domain Context:\n- Framework: Big Five (OCEAN) personality assessment\n- Instrument: IPIP-NEO-120 questionnaire (120 questions)\n- Traits: 5 (Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism)  \n- Facets: 30 (6 per trait, e.g., facet_anxiety, facet_friendliness, etc.)\n- Intensity Modifiers: 5 levels mapped to 0-100 scale:\n  * 0-19: \"very little\"\n  * 20-39: \"slightly\" \n  * 40-59: \"moderately\"\n  * 60-79: \"quite strongly\"\n  * 80-100: \"very strongly\"\n- Scale: 1-5 Likert (1=Very Inaccurate, 5=Very Accurate)",
+  "sections": {
+    "critic": [
+      {
+        "variant_id": "v2_detailed_checks_v2",
+        "variant_name": "Detailed Consistency Checks",
+        "is_baseline": false,
+        "full_meta_prompt": "You are an expert prompt engineer.\nYour task is to optimize the CRITIC section - internal self-reflection guidelines that help maintain consistency across 120 personality questionnaire responses.\n\nThe critic should guide the persona to:\n- Check answers against Big Five traits and 30 facets\n- Use intensity modifiers appropriately\n- Resolve conflicts between facets and traits\n- Ensure coherent personality profile\n\nMake it structured but natural, like an authentic internal monologue.\n\n### STRUCTURE OF THE PROMPT YOU MUST PRODUCE\nThe prompt you write MUST be structured into the following sections, in this exact order, and each section must follow its guidelines:\n- [Pre-Answer Consistency Protocol] A step-by-step internal checklist to verify that each answer matches the defined traits, facets, and intensity modifiers before responding.\n\n### RECOMMENDATIONS\nUse these recommendations for writing the new prompt, based on analysis of previous generations:\n- Use imperatives like 'Check', 'Verify', 'Confirm'.\n- Write as an internal monologue.\n- Keep steps short and easy to remember.\n\n### HARD CONSTRAINTS\n- Must contain at least three explicit, sequential checks.\n- Each check must reference either a trait, a facet, or an intensity modifier.\n- Must include a rule for handling conflicts (e.g., when a facet contradicts its parent trait).\n- Maximum length: 150 words.\n\n### YOUR RESPONSE FORMAT\nReturn ONLY the resulting prompt, wrapped in the following XML tags:\n<result_prompt>\n  ...your resulting prompt here...\n</result_prompt>\nDo not include any explanations or additional text outside this XML element.\n\nDomain Context:\n- Framework: Big Five (OCEAN) personality assessment\n- Instrument: IPIP-NEO-120 questionnaire (120 questions)\n- Traits: 5 (Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism)  \n- Facets: 30 (6 per trait, e.g., facet_anxiety, facet_friendliness, etc.)\n- Intensity Modifiers: 5 levels mapped to 0-100 scale:\n  * 0-19: \"very little\"\n  * 20-39: \"slightly\" \n  * 40-59: \"moderately\"\n  * 60-79: \"quite strongly\"\n  * 80-100: \"very strongly\"\n- Scale: 1-5 Likert (1=Very Inaccurate, 5=Very Accurate)\n\nUser Query:\nOptimize the following CRITIC_SECTION:\n\n<critic_section>\n{original_text}\n</critic_section>",
+        "meta_config": {
+          "section_specs": [
+            {
+              "name": "Pre-Answer Consistency Protocol",
+              "description": "A step-by-step internal checklist to verify that each answer matches the defined traits, facets, and intensity modifiers before responding."
+            }
+          ],
+          "constraints": [
+            "Must contain at least three explicit, sequential checks.",
+            "Each check must reference either a trait, a facet, or an intensity modifier.",
+            "Must include a rule for handling conflicts (e.g., when a facet contradicts its parent trait).",
+            "Maximum length: 150 words."
+          ],
+          "recommendations": [
+            "Use imperatives like 'Check', 'Verify', 'Confirm'.",
+            "Write as an internal monologue.",
+            "Keep steps short and easy to remember."
+          ]
+        }
+      }
+    ],
+    "task": [
+      {
+        "variant_id": "v3_structured_full_v2",
+        "variant_name": "Structured Full Context",
+        "is_baseline": false,
+        "full_meta_prompt": "You are an expert prompt engineer.\nYour task is to optimize the TASK section - instructions for completing the IPIP-NEO-120 questionnaire.\n\nThe task should:\n- Explain the 1-5 Likert scale clearly\n- Guide how to translate personality profile into responses\n- Include step-by-step reflection process\n- Feel natural and encourage consistent answering\n\n### STRUCTURE OF THE PROMPT YOU MUST PRODUCE\nThe prompt you write MUST be structured into the following sections, in this exact order, and each section must follow its guidelines:\n- [Contextual Task Instructions] Instructions that provide full context about the questionnaire, the scale, and how to use the personality profile when answering each question.\n\n### RECOMMENDATIONS\nUse these recommendations for writing the new prompt, based on analysis of previous generations:\n- Use clear action verbs: 'Recall', 'Compare', 'Decide'.\n- Include scale explanation early.\n- Make reflection steps flow naturally.\n\n### HARD CONSTRAINTS\n- Must explain the 1-5 scale (Very Inaccurate to Very Accurate).\n- Must include at least 3 reflection steps.\n- Must reference traits, facets, and intensity modifiers.\n- Keep under 120 words.\n\n### YOUR RESPONSE FORMAT\nReturn ONLY the resulting prompt, wrapped in the following XML tags:\n<result_prompt>\n  ...your resulting prompt here...\n</result_prompt>\nDo not include any explanations or additional text outside this XML element.\n\nDomain Context:\n- Framework: Big Five (OCEAN) personality assessment\n- Instrument: IPIP-NEO-120 questionnaire (120 questions)\n- Traits: 5 (Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism)  \n- Facets: 30 (6 per trait, e.g., facet_anxiety, facet_friendliness, etc.)\n- Intensity Modifiers: 5 levels mapped to 0-100 scale:\n  * 0-19: \"very little\"\n  * 20-39: \"slightly\" \n  * 40-59: \"moderately\"\n  * 60-79: \"quite strongly\"\n  * 80-100: \"very strongly\"\n- Scale: 1-5 Likert (1=Very Inaccurate, 5=Very Accurate)\n\nUser Query:\nOptimize the following TASK_SECTION:\n\n<task_section>\n{original_text}\n</task_section>",
+        "meta_config": {
+          "section_specs": [
+            {
+              "name": "Contextual Task Instructions",
+              "description": "Instructions that provide full context about the questionnaire, the scale, and how to use the personality profile when answering each question."
+            }
+          ],
+          "constraints": [
+            "Must explain the 1-5 scale (Very Inaccurate to Very Accurate).",
+            "Must include at least 3 reflection steps.",
+            "Must reference traits, facets, and intensity modifiers.",
+            "Keep under 120 words."
+          ],
+          "recommendations": [
+            "Use clear action verbs: 'Recall', 'Compare', 'Decide'.",
+            "Include scale explanation early.",
+            "Make reflection steps flow naturally."
+          ]
+        }
+      }
+    ]
+  }
+}
